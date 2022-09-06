@@ -42,7 +42,7 @@ public final class Scene {
 
     public void update() {
         if (isLoaded()) {
-            world.setDelta((float) Zenith.getEngine().getTimer().getDeltaTime());
+            world.setDelta((float) Zenith.getEngine().getTime().getDeltaTime());
             world.process();
         }
     }

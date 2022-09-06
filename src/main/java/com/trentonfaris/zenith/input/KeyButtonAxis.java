@@ -19,7 +19,7 @@ public class KeyButtonAxis extends Axis {
 	 * Creates a new {@link KeyButtonAxis} from the specified name and default
 	 * positive and negative inputs.
 	 *
-	 * @param name
+	 * @param name The name of this {@link KeyButtonAxis}
 	 */
 	public KeyButtonAxis(String name) {
 		this(name, new KeyButtonInput(), new KeyButtonInput());
@@ -29,9 +29,9 @@ public class KeyButtonAxis extends Axis {
 	 * Creates a new {@link KeyButtonAxis} from the specified name, positive, and
 	 * negative inputs.
 	 *
-	 * @param name
-	 * @param positive
-	 * @param negative
+	 * @param name The name of this {@link KeyButtonAxis}
+	 * @param positive The positive vector {@link KeyButtonInput}
+	 * @param negative The negative vector {@link KeyButtonInput}
 	 */
 	public KeyButtonAxis(String name, KeyButtonInput positive, KeyButtonInput negative) {
 		super(name);
@@ -58,7 +58,7 @@ public class KeyButtonAxis extends Axis {
 	/**
 	 * Sets the {@link #positive} input.
 	 *
-	 * @param positive
+	 * @param positive The positive vector {@link KeyButtonInput}
 	 */
 	public void setPositive(KeyButtonInput positive) {
 		if (positive == null) {
@@ -82,7 +82,7 @@ public class KeyButtonAxis extends Axis {
 	/**
 	 * Sets the {@link #negative} input.
 	 *
-	 * @param negative
+	 * @param negative The negative vector {@link KeyButtonInput}
 	 */
 	public void setNegative(KeyButtonInput negative) {
 		if (negative == null) {

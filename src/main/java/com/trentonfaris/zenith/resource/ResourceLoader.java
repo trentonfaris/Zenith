@@ -12,14 +12,14 @@ import com.trentonfaris.zenith.exception.ResourceNotFoundException;
  *
  * @author Trenton Faris
  */
-public abstract class ResourceLoader<T extends Object> {
+public abstract class ResourceLoader<T> {
 	/** The scheme, or identifier, for the type of resource this loader loads. */
 	private final String scheme;
 
 	/**
 	 * Creates a new {@link ResourceLoader} with the specified scheme.
 	 *
-	 * @param scheme
+	 * @param scheme The target scheme for this {@link ResourceLoader}
 	 */
 	ResourceLoader(String scheme) {
 		if (scheme == null || scheme.isEmpty()) {
@@ -34,7 +34,7 @@ public abstract class ResourceLoader<T extends Object> {
 	/**
 	 * Loads a resource from the specified {@link URI}.
 	 *
-	 * @param uri
+	 * @param uri The target {@link URI} to load.
 	 * @return The loaded resource.
 	 * @throws ResourceIOException
 	 * @throws ResourceNotFoundException

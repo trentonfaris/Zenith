@@ -15,7 +15,7 @@ public abstract class Axis {
 	/**
 	 * Creates a new {@link Axis} from the specified name.
 	 *
-	 * @param name
+	 * @param name The name of the {@link Axis}
 	 */
 	public Axis(String name) {
 		if (name == null) {

@@ -1,24 +1,26 @@
-package com.trentonfaris.zenith;
+package com.trentonfaris.zenith.time;
+
+import com.trentonfaris.zenith.Engine;
 
 /**
- * The {@link Timer} class keeps track of engine time.
+ * The {@link Time} class keeps track of engine time.
  *
  * @author Trenton Faris
  */
-public final class Timer {
+public final class Time {
     /**
      * The factor used to smooth the {@link #deltaTime}.
      */
     private static final double T = 0.2f;
 
     /**
-     * The time that the {@link Timer} was started, in milliseconds.
+     * The time that the {@link Time} was started, in milliseconds.
      */
-    private final long startupTime;
+    private long startupTime;
 
     /**
      * The time at the beginning of this frame, in seconds, since the
-     * {@link Timer} was started.
+     * {@link Time} was started.
      */
     private double time;
 
@@ -29,7 +31,7 @@ public final class Timer {
 
     /**
      * The time at the beginning of the last frame, in seconds, since the
-     * {@link Timer} was started.
+     * {@link Time} was started.
      */
     private double prevTime;
 
@@ -44,17 +46,17 @@ public final class Timer {
     private double prevSmoothDeltaTime;
 
     /**
-     * The time step each {@link Timer#fixedUpdate()} occurs, in seconds.
+     * The time step each {@link Time#fixedUpdate()} occurs, in seconds.
      */
     private double fixedTimeStep = 1.0 / 60.0;
 
-    /**
-     * The {@link Timer} instance.
-     */
-    private static Timer instance;
-
-    Timer() {
+    public void init() {
         this.startupTime = System.currentTimeMillis();
+        this.time = 0;
+        this.deltaTime = 0;
+        this.prevTime = 0;
+        this.smoothDeltaTime = 0;
+        this.prevSmoothDeltaTime = 0;
     }
 
     /**
@@ -76,9 +78,9 @@ public final class Timer {
     }
 
     /**
-     * Gets the real time, in seconds, since the {@link Timer} was started.
+     * Gets the real time, in seconds, since the {@link Time} was started.
      *
-     * @return The real time, in seconds, since the {@link Timer} was started.
+     * @return The real time, in seconds, since the {@link Time} was started.
      */
     public double getRealTimeSinceStartup() {
         return (System.currentTimeMillis() - startupTime) / 1000.0;
@@ -86,7 +88,7 @@ public final class Timer {
 
     /**
      * Gets the time at the beginning of this frame. This is the time,
-     * in seconds, since the {@link Timer} was started.
+     * in seconds, since the {@link Time} was started.
      *
      * @return The {@link #time} at the beginning of this {@link #update}. This is
      * the time, in seconds, since the {@link Engine} was started.
@@ -114,8 +116,9 @@ public final class Timer {
     }
 
     /**
-     * Gets the
-     * @return
+     * Gets the {@link #fixedTimeStep}, in seconds.
+     *
+     * @return The {@link #fixedTimeStep}, in seconds.
      */
     public double getFixedTimeStep() {
         return fixedTimeStep;
@@ -123,18 +126,5 @@ public final class Timer {
 
     public void setFixedTimeStep(double fixedTimeStep) {
         this.fixedTimeStep = fixedTimeStep;
-    }
-
-    /**
-     * Gets the {@link Timer} instance.
-     *
-     * @return The {@link Timer} instance.
-     */
-    static Timer getInstance() {
-        if (instance == null) {
-            instance = new Timer();
-        }
-
-        return instance;
     }
 }

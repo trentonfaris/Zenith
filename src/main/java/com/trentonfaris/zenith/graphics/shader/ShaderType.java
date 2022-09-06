@@ -28,7 +28,8 @@ public enum ShaderType {
 	/**
 	 * Creates a new {@link ShaderType} from the specified OpenGL value.
 	 *
-	 * @param value
+	 * @param value The target {@link ShaderType} value
+	 * @param extension The target {@link ShaderType} extension
 	 */
 	ShaderType(int value, String extension) {
 		this.value = value;

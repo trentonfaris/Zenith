@@ -2,7 +2,6 @@ package com.trentonfaris.zenith;
 
 import com.trentonfaris.zenith.demo.plugin.DemoPlugin;
 import com.trentonfaris.zenith.graphics.Graphics;
-import com.trentonfaris.zenith.graphics.shader.Shader;
 import com.trentonfaris.zenith.input.Input;
 import com.trentonfaris.zenith.resource.ImageLoader;
 import com.trentonfaris.zenith.resource.ModelLoader;
@@ -10,13 +9,14 @@ import com.trentonfaris.zenith.resource.ResourceManager;
 import com.trentonfaris.zenith.resource.ShaderLoader;
 import com.trentonfaris.zenith.scene.SceneManager;
 import com.trentonfaris.zenith.scheduler.Scheduler;
+import com.trentonfaris.zenith.time.Time;
 import com.trentonfaris.zenith.window.Window;
 import org.apache.logging.log4j.Level;
 
 public final class Engine implements Runnable {
     private static final int TICKS_PER_SEC = 60;
 
-    private Timer timer;
+    private final Time time = new Time();
     private final Graphics graphics = new Graphics();
     private final Input input = new Input();
     private final Scheduler scheduler = new Scheduler();
@@ -41,8 +41,7 @@ public final class Engine implements Runnable {
     private void init() {
         Zenith.getLogger().log(Level.INFO, "Engine initializing...");
 
-        this.timer = Timer.getInstance();
-
+        time.init();
         window.init();
         input.init();
         graphics.init();
@@ -58,14 +57,14 @@ public final class Engine implements Runnable {
 
     private void loop() {
         while (running) {
-            timer.update();
+            time.update();
 
-            this.accumulator += timer.getDeltaTime();
+            this.accumulator += time.getDeltaTime();
 
-            while (accumulator >= timer.getFixedTimeStep()) {
-                timer.fixedUpdate();
+            while (accumulator >= time.getFixedTimeStep()) {
+                time.fixedUpdate();
                 // Do fixed time step updates here
-                this.accumulator -= timer.getFixedTimeStep();
+                this.accumulator -= time.getFixedTimeStep();
             }
 
             input.update();
@@ -108,8 +107,8 @@ public final class Engine implements Runnable {
         return sceneManager;
     }
 
-    public Timer getTimer() {
-        return timer;
+    public Time getTime() {
+        return time;
     }
 
     public Window getWindow() {

@@ -8,6 +8,6 @@ public class Scheduler {
     private double timeBuffer = 0.0;
 
     public void update() {
-        this.timeBuffer += Zenith.getEngine().getTimer().getDeltaTime();
+        this.timeBuffer += Zenith.getEngine().getTime().getDeltaTime();
     }
 }
