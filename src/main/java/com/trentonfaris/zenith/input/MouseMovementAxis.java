@@ -114,9 +114,7 @@ public final class MouseMovementAxis extends Axis {
 		MouseMovementAxis other = (MouseMovementAxis) obj;
 		if (mouseAxis != other.mouseAxis)
 			return false;
-		if (Float.floatToIntBits(sensitivity) != Float.floatToIntBits(other.sensitivity))
-			return false;
-		return true;
+		return Float.floatToIntBits(sensitivity) == Float.floatToIntBits(other.sensitivity);
 	}
 
 	public enum MouseAxis {

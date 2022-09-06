@@ -14,7 +14,7 @@ public final class Timer {
     /**
      * The time that the {@link Timer} was started, in milliseconds.
      */
-    private long startupTime;
+    private final long startupTime;
 
     /**
      * The time at the beginning of this frame, in seconds, since the

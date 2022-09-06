@@ -59,8 +59,8 @@ public final class Framebuffer {
      * Adds an {@link Attachment} to this {@link Framebuffer}. Removes and disposes
      * of the previous {@link Attachment}, if one exists.
      *
-     * @param attachment
-     * @param renderTarget
+     * @param attachment The {@link Attachment} where the {@link RenderTarget} will be added
+     * @param renderTarget The target {@link RenderTarget} to add
      */
     public void addAttachment(Attachment attachment, RenderTarget renderTarget) {
         if (attachment == null) {
@@ -88,7 +88,7 @@ public final class Framebuffer {
         if (renderTarget instanceof Texture2D) {
             GL30.glFramebufferTexture2D(GL30.GL_FRAMEBUFFER, attachment.getValue(), GL11.GL_TEXTURE_2D,
                     ((Texture2D) renderTarget).getTbo(), 0);
-        } else if (renderTarget instanceof Renderbuffer) {
+        } else {
             GL30.glFramebufferRenderbuffer(GL30.GL_FRAMEBUFFER, attachment.getValue(), GL30.GL_RENDERBUFFER,
                     ((Renderbuffer) renderTarget).getRbo());
         }
@@ -103,7 +103,7 @@ public final class Framebuffer {
     /**
      * Removes and disposes of an {@link Attachment} from this {@link Framebuffer}.
      *
-     * @param attachment
+     * @param attachment The {@link Attachment} to remove
      */
     public void removeAttachment(Attachment attachment) {
         if (attachment == null) {
@@ -152,7 +152,7 @@ public final class Framebuffer {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((renderTargets == null) ? 0 : renderTargets.hashCode());
+        result = prime * result + renderTargets.hashCode();
         result = prime * result + fbo;
         return result;
     }
@@ -166,13 +166,8 @@ public final class Framebuffer {
         if (getClass() != obj.getClass())
             return false;
         Framebuffer other = (Framebuffer) obj;
-        if (renderTargets == null) {
-            if (other.renderTargets != null)
-                return false;
-        } else if (!renderTargets.equals(other.renderTargets))
+        if (!renderTargets.equals(other.renderTargets))
             return false;
-        if (fbo != other.fbo)
-            return false;
-        return true;
+        return fbo == other.fbo;
     }
 }

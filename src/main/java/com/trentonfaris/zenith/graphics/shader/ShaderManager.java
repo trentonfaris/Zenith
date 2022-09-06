@@ -37,7 +37,7 @@ public final class ShaderManager {
     /**
      * Gets the {@link Shader} with the specified shader type.
      *
-     * @param shaderType
+     * @param shaderType The target {@link ShaderType}
      * @return The {@link Shader} with the specified shader type.
      */
     public <T extends Shader> Shader getShader(Class<T> shaderType) {
@@ -81,7 +81,7 @@ public final class ShaderManager {
     /**
      * Sets the {@link #activeShader} to the specified shader.
      *
-     * @param shader
+     * @param shader The target {@link Shader}
      */
     void setActiveShader(Shader shader) {
         this.activeShader = shader;

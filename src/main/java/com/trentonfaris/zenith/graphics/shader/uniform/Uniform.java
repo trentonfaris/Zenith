@@ -28,12 +28,11 @@ public abstract class Uniform {
 
 	/**
 	 * Creates a new {@link Uniform} from the program, name, {@link UniformType} and
-	 * {@link VarType}.
+	 * {@link UniformType}.
 	 *
 	 * @param program
 	 * @param name
-	 * @param uniformBinding
-	 * @param varType
+	 * @param uniformType
 	 */
 	public Uniform(int program, String name, UniformType uniformType) {
 		if (name == null || name.isEmpty()) {
@@ -110,8 +109,6 @@ public abstract class Uniform {
 			return false;
 		if (program != other.program)
 			return false;
-		if (uniformType != other.uniformType)
-			return false;
-		return true;
+		return uniformType == other.uniformType;
 	}
 }

@@ -109,9 +109,7 @@ public final class KeyButtonInput {
 		KeyButtonInput other = (KeyButtonInput) obj;
 		if (keyButtonType != other.keyButtonType)
 			return false;
-		if (value != other.value)
-			return false;
-		return true;
+		return value == other.value;
 	}
 
 	public enum KeyButtonType {

@@ -32,13 +32,13 @@ public final class Attribute<T> {
     public Attribute<T> copy() {
         Attribute<T> copy;
         if (value instanceof Float) {
-            copy = new Attribute<T>((T) Float.valueOf((float) value));
+            copy = new Attribute<>((T) Float.valueOf((float) value));
         } else if (value instanceof Vector2f) {
-            copy = new Attribute<T>((T) new Vector2f((Vector2f) value));
+            copy = new Attribute<>((T) new Vector2f((Vector2f) value));
         } else if (value instanceof Vector3f) {
-            copy = new Attribute<T>((T) new Vector3f((Vector3f) value));
+            copy = new Attribute<>((T) new Vector3f((Vector3f) value));
         } else if (value instanceof Vector4f) {
-            copy = new Attribute<T>((T) new Vector4f((Vector4f) value));
+            copy = new Attribute<>((T) new Vector4f((Vector4f) value));
         } else {
             String errorMsg = "Cannot copy this Attribute because it is of an unsupported data type.";
             Zenith.getLogger().error(errorMsg);
@@ -84,10 +84,7 @@ public final class Attribute<T> {
             return false;
         Attribute<?> other = (Attribute<?>) obj;
         if (value == null) {
-            if (other.value != null)
-                return false;
-        } else if (!value.equals(other.value))
-            return false;
-        return true;
+            return other.value == null;
+        } else return value.equals(other.value);
     }
 }

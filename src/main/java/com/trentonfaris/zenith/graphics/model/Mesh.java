@@ -66,9 +66,9 @@ public final class Mesh implements Copyable, Disposable {
      * Creates and builds a new {@link Mesh} with the specified vertices, indices,
      * {@link PrimitiveType}, and {@link Material}.
      *
-     * @param vertices
-     * @param indices
-     * @param material
+     * @param vertices The list of vertices of this {@link Mesh}
+     * @param indices The list of indices of this {@link Mesh}
+     * @param material The {@link Material} used to draw this {@link Mesh}
      */
     public Mesh(List<Vertex> vertices, List<Integer> indices, PrimitiveType primitiveType, Material material) {
         if (vertices == null || vertices.isEmpty()) {
@@ -189,7 +189,7 @@ public final class Mesh implements Copyable, Disposable {
         for (int i = 0; i < attributeSizes.size(); i++) {
             GL20.glEnableVertexAttribArray(i);
             GL20.glVertexAttribPointer(i, attributeSizes.get(i), GL11.GL_FLOAT, false, vertexSize * Float.BYTES,
-                    offset * Float.BYTES);
+                    (long) offset * Float.BYTES);
 
             offset += attributeSizes.get(i);
         }
@@ -259,7 +259,7 @@ public final class Mesh implements Copyable, Disposable {
     /**
      * Sets the {@link #primitiveType}.
      *
-     * @param primitiveType
+     * @param primitiveType The target {@link PrimitiveType}
      */
     public void setPrimitiveType(PrimitiveType primitiveType) {
         if (primitiveType == null) {
@@ -283,7 +283,7 @@ public final class Mesh implements Copyable, Disposable {
     /**
      * Sets the {@link #material}.
      *
-     * @param material
+     * @param material The target {@link Material}
      */
     public void setMaterial(Material material) {
         this.material = material;
@@ -331,10 +331,7 @@ public final class Mesh implements Copyable, Disposable {
         if (vbo != other.vbo)
             return false;
         if (vertices == null) {
-            if (other.vertices != null)
-                return false;
-        } else if (!vertices.equals(other.vertices))
-            return false;
-        return true;
+            return other.vertices == null;
+        } else return vertices.equals(other.vertices);
     }
 }

@@ -2,6 +2,7 @@ package com.trentonfaris.zenith;
 
 import com.trentonfaris.zenith.demo.plugin.DemoPlugin;
 import com.trentonfaris.zenith.graphics.Graphics;
+import com.trentonfaris.zenith.graphics.shader.Shader;
 import com.trentonfaris.zenith.input.Input;
 import com.trentonfaris.zenith.resource.ImageLoader;
 import com.trentonfaris.zenith.resource.ModelLoader;
@@ -79,6 +80,14 @@ public final class Engine implements Runnable {
 
     private void dispose() {
         sceneManager.unloadScene();
+
+        resourceManager.removeResourceLoader(ShaderLoader.class);
+        resourceManager.removeResourceLoader(ModelLoader.class);
+        resourceManager.removeResourceLoader(ImageLoader.class);
+
+        // TODO : Implement this function
+        resourceManager.dispose();
+
         graphics.dispose();
         window.dispose();
     }

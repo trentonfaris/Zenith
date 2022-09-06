@@ -48,21 +48,21 @@ public final class Texture2D extends Texture implements RenderTarget {
     /**
      * The pixel data of this {@link Texture2D}.
      */
-    private Buffer pixelData;
+    private final Buffer pixelData;
 
     /**
      * Creates a new {@link Texture2D} with no data from the specified texture
      * format, width, height, pixel format, pixel type, wrapping mode, and filtering
      * mode.
      *
-     * @param internalFormat
-     * @param width
-     * @param height
-     * @param pixelFormat
-     * @param pixelType
-     * @param pixelData
-     * @param wrappingMode
-     * @param filteringMode
+     * @param internalFormat The target {@link InternalFormat}
+     * @param width The target width
+     * @param height The target height
+     * @param pixelFormat The target {@link PixelFormat}
+     * @param pixelType The target {@link PixelType}
+     * @param pixelData The target {@link Buffer}
+     * @param wrappingMode The target {@link WrappingMode}
+     * @param filteringMode The target {@link FilteringMode}
      */
     public Texture2D(InternalFormat internalFormat, int width, int height, PixelFormat pixelFormat, PixelType pixelType,
                      Buffer pixelData, WrappingMode wrappingMode, FilteringMode filteringMode) {
@@ -298,8 +298,6 @@ public final class Texture2D extends Texture implements RenderTarget {
             return false;
         if (width != other.width)
             return false;
-        if (wrappingMode != other.wrappingMode)
-            return false;
-        return true;
+        return wrappingMode == other.wrappingMode;
     }
 }

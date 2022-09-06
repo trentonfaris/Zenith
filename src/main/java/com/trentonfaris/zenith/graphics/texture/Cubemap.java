@@ -143,54 +143,54 @@ public final class Cubemap extends Texture {
 	}
 
 	/**
-	 * Gets the {@link #right} {@link Image}.
+	 * Gets the right {@link Image}.
 	 *
-	 * @return The {@link #right} {@link Image}.
+	 * @return The right {@link Image}.
 	 */
 	public Image getRight() {
 		return images[0];
 	}
 
 	/**
-	 * Gets the {@link #left} {@link Image}.
+	 * Gets the left {@link Image}.
 	 *
-	 * @return The {@link #left} {@link Image}.
+	 * @return The left {@link Image}.
 	 */
 	public Image getLeft() {
 		return images[1];
 	}
 
 	/**
-	 * Gets the {@link #top} {@link Image}.
+	 * Gets the top {@link Image}.
 	 *
-	 * @return The {@link #top} {@link Image}.
+	 * @return The top {@link Image}.
 	 */
 	public Image getTop() {
 		return images[2];
 	}
 
 	/**
-	 * Gets the {@link #bottom} {@link Image}.
+	 * Gets the bottom {@link Image}.
 	 *
-	 * @return The {@link #bottom} {@link Image}.
+	 * @return The bottom {@link Image}.
 	 */
 	public Image getBottom() {
 		return images[3];
 	}
 
 	/**
-	 * Gets the {@link #front} {@link Image}.
+	 * Gets the front {@link Image}.
 	 *
-	 * @return The {@link #front} {@link Image}.
+	 * @return The front {@link Image}.
 	 */
 	public Image getFront() {
 		return images[4];
 	}
 
 	/**
-	 * Gets the {@link #back} {@link Image}.
+	 * Gets the back {@link Image}.
 	 *
-	 * @return The {@link #back} {@link Image}.
+	 * @return The back {@link Image}.
 	 */
 	public Image getBack() {
 		return images[5];
@@ -216,8 +216,6 @@ public final class Cubemap extends Texture {
 		Cubemap other = (Cubemap) obj;
 		if (!Arrays.equals(buffers, other.buffers))
 			return false;
-		if (!Arrays.equals(images, other.images))
-			return false;
-		return true;
+		return Arrays.equals(images, other.images);
 	}
 }

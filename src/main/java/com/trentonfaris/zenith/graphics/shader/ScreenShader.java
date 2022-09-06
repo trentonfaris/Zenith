@@ -2,6 +2,7 @@ package com.trentonfaris.zenith.graphics.shader;
 
 import com.trentonfaris.zenith.graphics.shader.uniform.Sampler2DUniform;
 import com.trentonfaris.zenith.graphics.shader.uniform.UniformType;
+import com.trentonfaris.zenith.graphics.texture.Texture2D;
 import com.trentonfaris.zenith.resource.resources.Shaders;
 
 /**

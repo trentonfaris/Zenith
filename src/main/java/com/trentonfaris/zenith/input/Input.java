@@ -62,12 +62,12 @@ public class Input {
     /**
      * The position of the mouse in the previous frame.
      */
-    private Vector2d prevMousePosition = new Vector2d();
+    private final Vector2d prevMousePosition = new Vector2d();
 
     /**
      * The position of the mouse in the current frame.
      */
-    private Vector2d mousePosition = new Vector2d();
+    private final Vector2d mousePosition = new Vector2d();
 
     public void init() {
         Zenith.getLogger().log(Level.INFO, "Input initializing...");

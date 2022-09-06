@@ -28,6 +28,7 @@ public final class Zenith {
 
 		while (!engine.isRunning()) {
 			// Block until Engine has initialized
+			// TODO : Improve this
 		}
 
 		LOGGER.log(Level.INFO, "Zenith started.");

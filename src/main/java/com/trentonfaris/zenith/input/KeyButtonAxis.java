@@ -118,10 +118,7 @@ public class KeyButtonAxis extends Axis {
 		} else if (!negative.equals(other.negative))
 			return false;
 		if (positive == null) {
-			if (other.positive != null)
-				return false;
-		} else if (!positive.equals(other.positive))
-			return false;
-		return true;
+			return other.positive == null;
+		} else return positive.equals(other.positive);
 	}
 }

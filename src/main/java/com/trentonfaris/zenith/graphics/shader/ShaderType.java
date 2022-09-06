@@ -20,10 +20,10 @@ public enum ShaderType {
 	FRAGMENT(GL20.GL_FRAGMENT_SHADER, ".frag");
 
 	/** The OpenGL value of this {@link ShaderType}. */
-	private int value;
+	private final int value;
 
 	/** The file extension of this {@link ShaderType}. */
-	private String extension;
+	private final String extension;
 
 	/**
 	 * Creates a new {@link ShaderType} from the specified OpenGL value.

@@ -36,8 +36,8 @@ public abstract class ResourceLoader<T extends Object> {
 	 *
 	 * @param uri
 	 * @return The loaded resource.
-	 * @throws {@link ResourceIOException}
-	 * @throws {@link ResourceNotFoundException}
+	 * @throws ResourceIOException
+	 * @throws ResourceNotFoundException
 	 */
 	public abstract T load(URI uri) throws ResourceIOException, ResourceNotFoundException;
 

@@ -1,12 +1,14 @@
 package com.trentonfaris.zenith.graphics.texture;
 
 import com.trentonfaris.zenith.Zenith;
+import com.trentonfaris.zenith.utility.Copyable;
+import com.trentonfaris.zenith.utility.Disposable;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.system.MemoryStack;
 
 import java.nio.IntBuffer;
 
-public abstract class Texture {
+public abstract class Texture implements Copyable, Disposable {
     /**
      * The texture buffer object of this {@link Texture}.
      */
@@ -20,7 +22,7 @@ public abstract class Texture {
     /**
      * Creates a new {@link Texture} with the specified target.
      *
-     * @param target
+     * @param target The texture {@link Target}
      */
     public Texture(Target target) {
         if (target == null) {
@@ -83,8 +85,6 @@ public abstract class Texture {
         Texture other = (Texture) obj;
         if (target != other.target)
             return false;
-        if (tbo != other.tbo)
-            return false;
-        return true;
+        return tbo == other.tbo;
     }
 }

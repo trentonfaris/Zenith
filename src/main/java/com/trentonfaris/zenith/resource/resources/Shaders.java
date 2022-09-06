@@ -1,5 +1,7 @@
 package com.trentonfaris.zenith.resource.resources;
 
+import com.trentonfaris.zenith.graphics.texture.Cubemap;
+import com.trentonfaris.zenith.graphics.texture.Texture2D;
 import com.trentonfaris.zenith.resource.ShaderLoader;
 import com.trentonfaris.zenith.utility.Utility;
 

@@ -29,8 +29,7 @@ public final class Renderbuffer implements RenderTarget {
     private final int rbo;
 
     /**
-     * Creates a new {@link Renderbuffer} from the specified {@ link
-     * InternalFormat}, width, and height.
+     * Creates a new {@link Renderbuffer} from the specified {@link InternalFormat}, width, and height.
      *
      * @param internalFormat
      * @param width
@@ -89,7 +88,7 @@ public final class Renderbuffer implements RenderTarget {
      * Sets the {@link #width}. It is recommended to {@link #update()} after setting
      * the {@link #width}.
      *
-     * @param width
+     * @param width The target width
      */
     public void setWidth(int width) {
         this.width = width;
@@ -108,7 +107,7 @@ public final class Renderbuffer implements RenderTarget {
      * Sets the {@link #height}. It is recommended to {@link #update()} after
      * setting the {@link #height}.
      *
-     * @param height
+     * @param height The target height
      */
     public void setHeight(int height) {
         this.height = height;
@@ -149,8 +148,6 @@ public final class Renderbuffer implements RenderTarget {
             return false;
         if (rbo != other.rbo)
             return false;
-        if (width != other.width)
-            return false;
-        return true;
+        return width == other.width;
     }
 }

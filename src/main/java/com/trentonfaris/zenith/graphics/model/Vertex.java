@@ -27,7 +27,7 @@ public final class Vertex {
     }
 
     public Vertex copy() {
-        List<Attribute<?>> attributesCopy = new ArrayList<Attribute<?>>();
+        List<Attribute<?>> attributesCopy = new ArrayList<>();
         for (Attribute<?> attribute : attributes) {
             attributesCopy.add(attribute.copy());
         }
@@ -62,10 +62,7 @@ public final class Vertex {
             return false;
         Vertex other = (Vertex) obj;
         if (attributes == null) {
-            if (other.attributes != null)
-                return false;
-        } else if (!attributes.equals(other.attributes))
-            return false;
-        return true;
+            return other.attributes == null;
+        } else return attributes.equals(other.attributes);
     }
 }

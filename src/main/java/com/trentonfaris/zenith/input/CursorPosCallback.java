@@ -4,7 +4,7 @@ import org.joml.Vector2d;
 import org.lwjgl.glfw.GLFWCursorPosCallback;
 
 public final class CursorPosCallback extends GLFWCursorPosCallback {
-	private volatile Vector2d position = new Vector2d();
+	private final Vector2d position = new Vector2d();
 
 	@Override
 	public void invoke(long handle, double x, double y) {

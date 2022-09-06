@@ -1,11 +1,12 @@
 package com.trentonfaris.zenith.graphics.material;
 
 import com.trentonfaris.zenith.Zenith;
+import com.trentonfaris.zenith.graphics.material.property.*;
 import com.trentonfaris.zenith.graphics.shader.Shader;
+import com.trentonfaris.zenith.graphics.shader.ShaderType;
 import com.trentonfaris.zenith.graphics.shader.uniform.*;
-import com.trentonfaris.zenith.graphics.texture.Cubemap;
-import com.trentonfaris.zenith.graphics.texture.Texture2D;
-import org.joml.*;
+import com.trentonfaris.zenith.utility.Copyable;
+import com.trentonfaris.zenith.utility.Disposable;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -17,7 +18,7 @@ import java.util.Map.Entry;
  *
  * @author Trenton Faris
  */
-public final class Material {
+public final class Material implements Copyable, Disposable {
     /**
      * The {@link Shader} used by this {@link Material}.
      */
@@ -26,14 +27,13 @@ public final class Material {
     /**
      * The map of material properties.
      */
-    private final Map<String, MaterialProperty<?>> materialProperties = new HashMap<>();
+    private final Map<String, Property> properties = new HashMap<>();
 
     /**
      * Creates a new {@link Material} with the specified {@link Shader} type.
      *
-     * @param shaderType
+     * @param shaderType The underlying {@link ShaderType}
      */
-    @SuppressWarnings("unchecked")
     public Material(Class<? extends Shader> shaderType) {
         if (shaderType == null) {
             String errorMsg = "Cannot create a Material from a null shaderType.";
@@ -49,49 +49,36 @@ public final class Material {
             String name = entry.getKey();
             Uniform uniform = entry.getValue();
 
+            // Create a material property corresponding to each uniform and initialize its
+            // default value.
             if (uniform.getUniformType() == UniformType.MATERIAL) {
-                MaterialProperty<?> materialProperty;
-
-                // Create a material property corresponding to each uniform and initialize its
-                // default value.
                 if (uniform instanceof BoolUniform) {
-                    materialProperty = MaterialProperty.of(Boolean.class);
-                    ((MaterialProperty<Boolean>) materialProperty).value = false;
+                    properties.put(name, new BoolProperty());
                 } else if (uniform instanceof FloatUniform) {
-                    materialProperty = MaterialProperty.of(Float.class);
-                    ((MaterialProperty<Float>) materialProperty).value = 0.0f;
+                    properties.put(name, new FloatProperty());
                 } else if (uniform instanceof IntUniform) {
-                    materialProperty = MaterialProperty.of(Integer.class);
-                    ((MaterialProperty<Integer>) materialProperty).value = 0;
+                    properties.put(name, new IntProperty());
                 } else if (uniform instanceof Mat2Uniform) {
-                    materialProperty = MaterialProperty.of(Matrix2f.class);
-                    ((MaterialProperty<Matrix2f>) materialProperty).value = new Matrix2f();
+                    properties.put(name, new Mat2Property());
                 } else if (uniform instanceof Mat3Uniform) {
-                    materialProperty = MaterialProperty.of(Matrix3f.class);
-                    ((MaterialProperty<Matrix3f>) materialProperty).value = new Matrix3f();
+                    properties.put(name, new Mat3Property());
                 } else if (uniform instanceof Mat4Uniform) {
-                    materialProperty = MaterialProperty.of(Matrix4f.class);
-                    ((MaterialProperty<Matrix4f>) materialProperty).value = new Matrix4f();
+                    properties.put(name, new Mat4Property());
                 } else if (uniform instanceof Sampler2DUniform) {
-                    materialProperty = MaterialProperty.of(Texture2D.class);
+                    properties.put(name, new Texture2DProperty());
                 } else if (uniform instanceof SamplerCubeUniform) {
-                    materialProperty = MaterialProperty.of(Cubemap.class);
+                    properties.put(name, new CubemapProperty());
                 } else if (uniform instanceof Vec2Uniform) {
-                    materialProperty = MaterialProperty.of(Vector2f.class);
-                    ((MaterialProperty<Vector2f>) materialProperty).value = new Vector2f();
+                    properties.put(name, new Vec2Property());
                 } else if (uniform instanceof Vec3Uniform) {
-                    materialProperty = MaterialProperty.of(Vector3f.class);
-                    ((MaterialProperty<Vector3f>) materialProperty).value = new Vector3f();
+                    properties.put(name, new Vec3Property());
                 } else if (uniform instanceof Vec4Uniform) {
-                    materialProperty = MaterialProperty.of(Vector4f.class);
-                    ((MaterialProperty<Vector4f>) materialProperty).value = new Vector4f();
+                    properties.put(name, new Vec4Property());
                 } else {
                     String errorMsg = "Cannot create a MaterialProperty for an unsupported Uniform type.";
                     Zenith.getLogger().error(errorMsg);
                     throw new IllegalArgumentException(errorMsg);
                 }
-
-                materialProperties.put(name, materialProperty);
             }
         }
     }
@@ -99,76 +86,64 @@ public final class Material {
     public Material copy() {
         Material material = new Material(shaderType);
 
-        for (Entry<String, MaterialProperty<?>> entry : materialProperties.entrySet()) {
+        for (Entry<String, Property> entry : properties.entrySet()) {
             String name = entry.getKey();
-            MaterialProperty<?> materialProperty = entry.getValue();
+            Property property = entry.getValue();
 
-            material.materialProperties.put(name, materialProperty.copy());
+            material.properties.put(name, property.copy());
         }
 
         return material;
     }
 
     public void dispose() {
-        for (Entry<String, MaterialProperty<?>> entry : materialProperties.entrySet()) {
-            MaterialProperty<?> materialProperty = entry.getValue();
-
-            if (materialProperty.value instanceof Texture2D) {
-                ((Texture2D) materialProperty.value).dispose();
-            } else if (materialProperty.value instanceof Cubemap) {
-                ((Cubemap) materialProperty.value).dispose();
-            }
+        for (Entry<String, Property> entry : properties.entrySet()) {
+            Property property = entry.getValue();
+            property.dispose();
         }
     }
 
     /**
-     * Sends {@link MaterialProperty} data associated with this {@link Material} to
+     * Sends {@link Property} data associated with this {@link Material} to
      * the {@link Shader}. Data types must match the associated {@link Uniform}
-     * {@link VarType}.
+     * {@link UniformType}.
      */
     public void preDraw() {
         Shader shader = Zenith.getEngine().getGraphics().getShaderManager().getShader(shaderType);
         shader.use();
 
         int numTextures = 0;
-        for (Entry<String, MaterialProperty<?>> entry : materialProperties.entrySet()) {
+        for (Entry<String, Property> entry : properties.entrySet()) {
             String name = entry.getKey();
-            MaterialProperty<?> materialProperty = entry.getValue();
-
-            if (materialProperty.value == null) {
-                continue;
-            }
+            Property property = entry.getValue();
 
             Uniform uniform = shader.getUniforms().get(name);
 
-            /**
-             * Send material property data to the corresponding shader uniform. We assume
-             * the material property and the corresponding uniform have matching data types.
-             */
-            if (uniform instanceof BoolUniform) {
-                ((BoolUniform) uniform).set((boolean) materialProperty.value);
-            } else if (uniform instanceof FloatUniform) {
-                ((FloatUniform) uniform).set((float) materialProperty.value);
-            } else if (uniform instanceof IntUniform) {
-                ((IntUniform) uniform).set((int) materialProperty.value);
-            } else if (uniform instanceof Mat2Uniform) {
-                ((Mat2Uniform) uniform).set((Matrix2f) materialProperty.value);
-            } else if (uniform instanceof Mat3Uniform) {
-                ((Mat3Uniform) uniform).set((Matrix3f) materialProperty.value);
-            } else if (uniform instanceof Mat4Uniform) {
-                ((Mat4Uniform) uniform).set((Matrix4f) materialProperty.value);
-            } else if (uniform instanceof Sampler2DUniform) {
-                ((Sampler2DUniform) uniform).set(numTextures, (Texture2D) materialProperty.value);
+            // Send material property data to the corresponding shader uniform.
+            if (property instanceof BoolProperty && uniform instanceof BoolUniform) {
+                ((BoolUniform) uniform).set(((BoolProperty) property).value);
+            } else if (property instanceof FloatProperty && uniform instanceof FloatUniform) {
+                ((FloatUniform) uniform).set(((FloatProperty) property).value);
+            } else if (property instanceof IntProperty && uniform instanceof IntUniform) {
+                ((IntUniform) uniform).set(((IntProperty) property).value);
+            } else if (property instanceof Mat2Property && uniform instanceof Mat2Uniform) {
+                ((Mat2Uniform) uniform).set(((Mat2Property) property).value);
+            } else if (property instanceof Mat3Property && uniform instanceof Mat3Uniform) {
+                ((Mat3Uniform) uniform).set(((Mat3Property) property).value);
+            } else if (property instanceof Mat4Property && uniform instanceof Mat4Uniform) {
+                ((Mat4Uniform) uniform).set(((Mat4Property) property).value);
+            } else if (property instanceof Texture2DProperty && uniform instanceof Sampler2DUniform) {
+                ((Sampler2DUniform) uniform).set(numTextures, ((Texture2DProperty) property).value);
                 numTextures++;
-            } else if (uniform instanceof SamplerCubeUniform) {
-                ((SamplerCubeUniform) uniform).set(numTextures, (Cubemap) materialProperty.value);
+            } else if (property instanceof CubemapProperty && uniform instanceof SamplerCubeUniform) {
+                ((SamplerCubeUniform) uniform).set(numTextures, ((CubemapProperty) property).value);
                 numTextures++;
-            } else if (uniform instanceof Vec2Uniform) {
-                ((Vec2Uniform) uniform).set((Vector2f) materialProperty.value);
-            } else if (uniform instanceof Vec3Uniform) {
-                ((Vec3Uniform) uniform).set((Vector3f) materialProperty.value);
-            } else if (uniform instanceof Vec4Uniform) {
-                ((Vec4Uniform) uniform).set((Vector4f) materialProperty.value);
+            } else if (property instanceof Vec2Property && uniform instanceof Vec2Uniform) {
+                ((Vec2Uniform) uniform).set(((Vec2Property) property).value);
+            } else if (property instanceof Vec3Property && uniform instanceof Vec3Uniform) {
+                ((Vec3Uniform) uniform).set(((Vec3Property) property).value);
+            } else if (property instanceof Vec4Property && uniform instanceof Vec4Uniform) {
+                ((Vec4Uniform) uniform).set(((Vec4Property) property).value);
             }
         }
     }
@@ -183,19 +158,19 @@ public final class Material {
     }
 
     /**
-     * Gets an unmodifiable map of the {@link #materialProperties}.
+     * Gets an unmodifiable map of the {@link #properties}.
      *
-     * @return An unmodifiable map of the {@link #materialProperties}.
+     * @return An unmodifiable map of the {@link #properties}.
      */
-    public Map<String, MaterialProperty<?>> getMaterialProperties() {
-        return Collections.unmodifiableMap(materialProperties);
+    public Map<String, Property> getProperties() {
+        return Collections.unmodifiableMap(properties);
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((materialProperties == null) ? 0 : materialProperties.hashCode());
+        result = prime * result + properties.hashCode();
         result = prime * result + ((shaderType == null) ? 0 : shaderType.hashCode());
         return result;
     }
@@ -209,16 +184,10 @@ public final class Material {
         if (getClass() != obj.getClass())
             return false;
         Material other = (Material) obj;
-        if (materialProperties == null) {
-            if (other.materialProperties != null)
-                return false;
-        } else if (!materialProperties.equals(other.materialProperties))
+        if (!properties.equals(other.properties))
             return false;
         if (shaderType == null) {
-            if (other.shaderType != null)
-                return false;
-        } else if (!shaderType.equals(other.shaderType))
-            return false;
-        return true;
+            return other.shaderType == null;
+        } else return shaderType.equals(other.shaderType);
     }
 }

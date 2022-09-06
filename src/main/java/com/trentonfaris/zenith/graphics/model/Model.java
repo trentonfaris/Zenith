@@ -36,7 +36,7 @@ public final class Model implements Copyable, Disposable {
     /**
      * Loads a {@link Model} from the {@code String} URI.
      *
-     * @param uri
+     * @param uri The URI of the model to load
      * @return The {@link Model}.
      */
     public static Model loadModel(String uri) {

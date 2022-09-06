@@ -6,15 +6,11 @@ import org.lwjgl.glfw.GLFWKeyCallback;
 public final class KeyboardCallback extends GLFWKeyCallback {
 	private static final int NUM_KEYS = 65536;
 
-	private volatile boolean[] keys = new boolean[NUM_KEYS];
+	private final boolean[] keys = new boolean[NUM_KEYS];
 
 	@Override
 	public void invoke(long handle, int key, int scancode, int action, int mods) {
-		if (action == GLFW.GLFW_RELEASE) {
-			keys[key] = false;
-		} else {
-			keys[key] = true;
-		}
+        keys[key] = action != GLFW.GLFW_RELEASE;
 	}
 
 	boolean[] getKeys() {

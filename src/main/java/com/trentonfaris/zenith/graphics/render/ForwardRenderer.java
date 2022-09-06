@@ -43,7 +43,7 @@ import com.trentonfaris.zenith.graphics.shader.uniform.Vec3Uniform;
  * render passes. Forward rendering is quite expensive. It is recommended to
  * never use more per-fragment lights than necessary. If more per-fragment
  * lights are required than the {@link ForwardRenderer} will support, use the
- * {@link DeferredRenderPath}.
+ * {@link DeferredRenderer}.
  *
  * <p>
  * Lights that have their {@link Priority} set to {@link Priority#NOT_IMPORTANT}

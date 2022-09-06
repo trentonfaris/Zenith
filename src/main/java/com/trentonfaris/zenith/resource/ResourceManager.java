@@ -14,6 +14,7 @@ import com.trentonfaris.zenith.exception.ResourceIOException;
 import com.trentonfaris.zenith.exception.ResourceLoaderNotFoundException;
 import com.trentonfaris.zenith.exception.ResourceNotFoundException;
 import com.trentonfaris.zenith.utility.Copyable;
+import com.trentonfaris.zenith.utility.Disposable;
 import org.apache.logging.log4j.Level;
 
 /**
@@ -22,20 +23,25 @@ import org.apache.logging.log4j.Level;
  *
  * @author Trenton Faris
  */
-public final class ResourceManager {
+public final class ResourceManager implements Disposable {
 	/** The {@link File} indicated the location of the resources directory. */
 	public static final File RESOURCES_DIRECTORY = new File("resources");
 
 	/** The list of loaders. */
-	private Map<Class<? extends ResourceLoader<? extends Object>>, ResourceLoader<? extends Object>> resourceLoaders = new HashMap<>();
+	private final Map<Class<? extends ResourceLoader<?>>, ResourceLoader<?>> resourceLoaders = new HashMap<>();
 
 	/** The cache of loaded resources. */
-	private Map<URI, Object> cache = new HashMap<>();
+	private final Map<URI, Object> cache = new HashMap<>();
 
 	public ResourceManager() {
 		if (!ResourceManager.RESOURCES_DIRECTORY.exists()) {
+			// TODO : handle return value
 			ResourceManager.RESOURCES_DIRECTORY.mkdir();
 		}
+	}
+
+	public void dispose() {
+
 	}
 
 	/**
@@ -43,7 +49,7 @@ public final class ResourceManager {
 	 * {@link ResourceManager}. If necessary, creates a directory in the resources folder
 	 * for the specified resource loader's scheme.
 	 */
-	public <S extends Object, T extends ResourceLoader<S>> void registerResourceLoader(Class<T> resourceLoaderType) {
+	public <S, T extends ResourceLoader<S>> void registerResourceLoader(Class<T> resourceLoaderType) {
 		Zenith.getLogger().log(Level.INFO, "Registering resource loader: " + resourceLoaderType.getSimpleName());
 
 		if (resourceLoaders.containsKey(resourceLoaderType)) {
@@ -77,7 +83,7 @@ public final class ResourceManager {
 	 * Removes a {@link ResourceLoader} of the specified type from this
 	 * {@link ResourceManager}.
 	 */
-	public <S extends Object, T extends ResourceLoader<S>> void removeResourceLoader(Class<T> resourceLoaderType) {
+	public <S, T extends ResourceLoader<S>> void removeResourceLoader(Class<T> resourceLoaderType) {
 		if (resourceLoaderType == null) {
 			return;
 		}
@@ -127,9 +133,9 @@ public final class ResourceManager {
 			throws ResourceIOException, ResourceLoaderNotFoundException, ResourceNotFoundException {
 		String scheme = uri.getScheme();
 
-		ResourceLoader<? extends Object> resourceLoader = null;
+		ResourceLoader<?> resourceLoader = null;
 
-		for (Entry<Class<? extends ResourceLoader<? extends Object>>, ResourceLoader<? extends Object>> entry : resourceLoaders
+		for (Entry<Class<? extends ResourceLoader<?>>, ResourceLoader<?>> entry : resourceLoaders
 				.entrySet()) {
 			if (entry.getValue().getScheme().equalsIgnoreCase(scheme)) {
 				resourceLoader = entry.getValue();
@@ -144,7 +150,7 @@ public final class ResourceManager {
 		Object resource = resourceLoader.load(uri);
 
 		if (resource == null) {
-			Zenith.getLogger().error("Cannot read the resource: " + uri.toString());
+			Zenith.getLogger().error("Cannot read the resource: " + uri);
 			throw new ResourceIOException(uri.toString());
 		}
 

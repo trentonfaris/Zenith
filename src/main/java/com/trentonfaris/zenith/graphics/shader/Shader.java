@@ -33,7 +33,7 @@ public abstract class Shader implements Disposable {
     /**
      * Creates a new {@link Shader} from the specified URI.
      *
-     * @param uri
+     * @param uri The URI of the shader to load
      */
     Shader(String uri) {
         int resource;
@@ -66,7 +66,7 @@ public abstract class Shader implements Disposable {
      * association for the {@link Uniform} name or {@link UniformType} already
      * exists, it will be overridden.
      *
-     * @param uniform
+     * @param uniform The target {@link Uniform}
      */
     protected final void registerUniform(Uniform uniform) {
         if (uniform == null) {

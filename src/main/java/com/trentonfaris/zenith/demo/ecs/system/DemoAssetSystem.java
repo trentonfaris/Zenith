@@ -1,7 +1,5 @@
 package com.trentonfaris.zenith.demo.ecs.system;
 
-import org.joml.Vector3f;
-
 import com.artemis.BaseSystem;
 import com.artemis.ComponentMapper;
 import com.trentonfaris.zenith.demo.resource.resources.DemoImages;
@@ -10,166 +8,158 @@ import com.trentonfaris.zenith.ecs.component.transform.Position;
 import com.trentonfaris.zenith.ecs.component.transform.Scale;
 import com.trentonfaris.zenith.ecs.system.light.LightSystem;
 import com.trentonfaris.zenith.graphics.material.Material;
-import com.trentonfaris.zenith.graphics.material.MaterialProperty;
+import com.trentonfaris.zenith.graphics.material.property.*;
 import com.trentonfaris.zenith.graphics.model.Model;
 import com.trentonfaris.zenith.graphics.shader.SkyboxShader;
 import com.trentonfaris.zenith.graphics.shader.StandardShader;
-import com.trentonfaris.zenith.graphics.texture.Cubemap;
-import com.trentonfaris.zenith.graphics.texture.FilteringMode;
-import com.trentonfaris.zenith.graphics.texture.InternalFormat;
-import com.trentonfaris.zenith.graphics.texture.PixelFormat;
-import com.trentonfaris.zenith.graphics.texture.PixelType;
-import com.trentonfaris.zenith.graphics.texture.Texture2D;
-import com.trentonfaris.zenith.graphics.texture.WrappingMode;
+import com.trentonfaris.zenith.graphics.texture.*;
 import com.trentonfaris.zenith.image.Image;
 import com.trentonfaris.zenith.resource.resources.Images;
 import com.trentonfaris.zenith.resource.resources.Models;
+import org.joml.Vector3f;
 
 public class DemoAssetSystem extends BaseSystem {
-	ComponentMapper<Position> mPosition;
-	ComponentMapper<Scale> mScale;
-	ComponentMapper<Renderable> mRenderable;
+    ComponentMapper<Position> mPosition;
+    ComponentMapper<Scale> mScale;
+    ComponentMapper<Renderable> mRenderable;
 
-	LightSystem lightSystem;
+    LightSystem lightSystem;
 
-	@Override
-	protected void initialize() {
-		loadGround();
-		loadSky();
-		loadCube();
-	}
+    @Override
+    protected void initialize() {
+        loadGround();
+        loadSky();
+        loadCube();
+    }
 
-	@SuppressWarnings("unchecked")
-	private void loadGround() {
-		int entity = world.create();
+    private void loadGround() {
+        int entity = world.create();
 
-		Scale scale = mScale.create(entity);
-		scale.xyz = new Vector3f(50, 1, 50);
+        Scale scale = mScale.create(entity);
+        scale.xyz = new Vector3f(50, 1, 50);
 
-		Renderable renderable = mRenderable.create(entity);
-		renderable.model = Model.loadModel(Models.PLANE.getURI());
+        Renderable renderable = mRenderable.create(entity);
+        renderable.model = Model.loadModel(Models.PLANE.getURI());
 
-		Material material = renderable.model.getMeshes().get(0).getMaterial();
+        Material material = renderable.model.getMeshes().get(0).getMaterial();
 
-		MaterialProperty<?> albedoColor = material.getMaterialProperties().get(StandardShader.ALBEDO_COLOR);
-		if (albedoColor.value instanceof Vector3f) {
-			((MaterialProperty<Vector3f>) albedoColor).value = new Vector3f(0.2f);
-		}
-	}
+        Property albedoColor = material.getProperties().get(StandardShader.ALBEDO_COLOR);
+        if (albedoColor instanceof Vec3Property) {
+            ((Vec3Property) albedoColor).value = new Vector3f(0.2f);
+        }
+    }
 
-	@SuppressWarnings("unchecked")
-	private void loadSky() {
-		Image right = Image.loadImage(Images.DEFAULT_SKYBOX_RIGHT.getURI());
-		Image left = Image.loadImage(Images.DEFAULT_SKYBOX_LEFT.getURI());
-		Image top = Image.loadImage(Images.DEFAULT_SKYBOX_TOP.getURI());
-		Image bottom = Image.loadImage(Images.DEFAULT_SKYBOX_BOTTOM.getURI());
-		Image front = Image.loadImage(Images.DEFAULT_SKYBOX_FRONT.getURI());
-		Image back = Image.loadImage(Images.DEFAULT_SKYBOX_BACK.getURI());
+    private void loadSky() {
+        Image right = Image.loadImage(Images.DEFAULT_SKYBOX_RIGHT.getURI());
+        Image left = Image.loadImage(Images.DEFAULT_SKYBOX_LEFT.getURI());
+        Image top = Image.loadImage(Images.DEFAULT_SKYBOX_TOP.getURI());
+        Image bottom = Image.loadImage(Images.DEFAULT_SKYBOX_BOTTOM.getURI());
+        Image front = Image.loadImage(Images.DEFAULT_SKYBOX_FRONT.getURI());
+        Image back = Image.loadImage(Images.DEFAULT_SKYBOX_BACK.getURI());
 
-		Material skyboxMaterial = lightSystem.getSkyboxMaterial();
-		MaterialProperty<?> skybox = skyboxMaterial.getMaterialProperties().get(SkyboxShader.SKYBOX);
-		if (skybox.getType().isAssignableFrom(Cubemap.class)) {
-			((MaterialProperty<Cubemap>) skybox).value = new Cubemap(right, left, top, bottom, front, back);
-		}
-	}
+        Material skyboxMaterial = lightSystem.getSkyboxMaterial();
+        Property skybox = skyboxMaterial.getProperties().get(SkyboxShader.SKYBOX);
+        if (skybox instanceof CubemapProperty) {
+            ((CubemapProperty) skybox).value = new Cubemap(right, left, top, bottom, front, back);
+        }
+    }
 
-	@SuppressWarnings("unchecked")
-	private void loadCube() {
-		int entity = world.create();
+    private void loadCube() {
+        int entity = world.create();
 
-		Position position = mPosition.create(entity);
-		position.xyz = new Vector3f(0, 0.5f, 0);
+        Position position = mPosition.create(entity);
+        position.xyz = new Vector3f(0, 0.5f, 0);
 
-		Renderable renderable = mRenderable.create(entity);
-		renderable.model = Model.loadModel(Models.CUBE.getURI());
+        Renderable renderable = mRenderable.create(entity);
+        renderable.model = Model.loadModel(Models.CUBE.getURI());
 
-		Material material = renderable.model.getMeshes().get(0).getMaterial();
+        Material material = renderable.model.getMeshes().get(0).getMaterial();
 
-		// Albedo
-		Image albedo = Image.loadImage(DemoImages.ROCK_ALBEDO.getURI());
+        // Albedo
+        Image albedo = Image.loadImage(DemoImages.ROCK_ALBEDO.getURI());
 
-		MaterialProperty<?> useAlbedoMap = material.getMaterialProperties().get(StandardShader.USE_ALBEDO_MAP);
-		if (useAlbedoMap.getType().isAssignableFrom(Boolean.class)) {
-			((MaterialProperty<Boolean>) useAlbedoMap).value = true;
-		}
+        Property useAlbedoMap = material.getProperties().get(StandardShader.USE_ALBEDO_MAP);
+        if (useAlbedoMap instanceof BoolProperty) {
+            ((BoolProperty) useAlbedoMap).value = true;
+        }
 
-		MaterialProperty<?> albedoMap = material.getMaterialProperties().get(StandardShader.ALBEDO_MAP);
-		if (albedoMap.getType().isAssignableFrom(Texture2D.class)) {
-			((MaterialProperty<Texture2D>) albedoMap).value = new Texture2D(InternalFormat.SRGB, albedo.getWidth(),
-					albedo.getHeight(), PixelFormat.RGB, PixelType.UNSIGNED_SHORT, albedo.getData(),
-					WrappingMode.REPEAT, FilteringMode.LINEAR);
-		}
+        Property albedoMap = material.getProperties().get(StandardShader.ALBEDO_MAP);
+        if (albedoMap instanceof Texture2DProperty) {
+            ((Texture2DProperty) albedoMap).value = new Texture2D(InternalFormat.SRGB, albedo.getWidth(),
+                    albedo.getHeight(), PixelFormat.RGB, PixelType.UNSIGNED_SHORT, albedo.getData(),
+                    WrappingMode.REPEAT, FilteringMode.LINEAR);
+        }
 
-		// Roughness
-		Image roughness = Image.loadImage(DemoImages.ROCK_ROUGHNESS.getURI());
+        // Roughness
+        Image roughness = Image.loadImage(DemoImages.ROCK_ROUGHNESS.getURI());
 
-		MaterialProperty<?> useRoughnessMap = material.getMaterialProperties().get(StandardShader.USE_ROUGHNESS_MAP);
-		if (useRoughnessMap.getType().isAssignableFrom(Boolean.class)) {
-			((MaterialProperty<Boolean>) useRoughnessMap).value = true;
-		}
+        Property useRoughnessMap = material.getProperties().get(StandardShader.USE_ROUGHNESS_MAP);
+        if (useRoughnessMap instanceof BoolProperty) {
+            ((BoolProperty) useRoughnessMap).value = true;
+        }
 
-		MaterialProperty<?> roughnessMap = material.getMaterialProperties().get(StandardShader.ROUGHNESS_MAP);
-		if (roughnessMap.getType().isAssignableFrom(Texture2D.class)) {
-			((MaterialProperty<Texture2D>) roughnessMap).value = new Texture2D(InternalFormat.RED, roughness.getWidth(),
-					roughness.getHeight(), PixelFormat.RED, PixelType.UNSIGNED_BYTE, roughness.getData(),
-					WrappingMode.REPEAT, FilteringMode.LINEAR);
-		}
+        Property roughnessMap = material.getProperties().get(StandardShader.ROUGHNESS_MAP);
+        if (roughnessMap instanceof Texture2DProperty) {
+            ((Texture2DProperty) roughnessMap).value = new Texture2D(InternalFormat.RED, roughness.getWidth(),
+                    roughness.getHeight(), PixelFormat.RED, PixelType.UNSIGNED_BYTE, roughness.getData(),
+                    WrappingMode.REPEAT, FilteringMode.LINEAR);
+        }
 
-		// Ambient occlusion
-		Image ao = Image.loadImage(DemoImages.ROCK_AO.getURI());
+        // Ambient occlusion
+        Image ao = Image.loadImage(DemoImages.ROCK_AO.getURI());
 
-		MaterialProperty<?> useAoMap = material.getMaterialProperties().get(StandardShader.USE_AO_MAP);
-		if (useAoMap.getType().isAssignableFrom(Boolean.class)) {
-			((MaterialProperty<Boolean>) useAoMap).value = true;
-		}
+        Property useAoMap = material.getProperties().get(StandardShader.USE_AO_MAP);
+        if (useAoMap instanceof BoolProperty) {
+            ((BoolProperty) useAoMap).value = true;
+        }
 
-		MaterialProperty<?> aoMap = material.getMaterialProperties().get(StandardShader.AO_MAP);
-		if (aoMap.getType().isAssignableFrom(Texture2D.class)) {
-			((MaterialProperty<Texture2D>) aoMap).value = new Texture2D(InternalFormat.RED, ao.getWidth(),
-					ao.getHeight(), PixelFormat.RED, PixelType.UNSIGNED_BYTE, ao.getData(), WrappingMode.REPEAT,
-					FilteringMode.LINEAR);
-		}
+        Property aoMap = material.getProperties().get(StandardShader.AO_MAP);
+        if (aoMap instanceof Texture2DProperty) {
+            ((Texture2DProperty) aoMap).value = new Texture2D(InternalFormat.RED, ao.getWidth(),
+                    ao.getHeight(), PixelFormat.RED, PixelType.UNSIGNED_BYTE, ao.getData(), WrappingMode.REPEAT,
+                    FilteringMode.LINEAR);
+        }
 
-		// Normal
-		Image normal = Image.loadImage(DemoImages.ROCK_NORMAL.getURI());
+        // Normal
+        Image normal = Image.loadImage(DemoImages.ROCK_NORMAL.getURI());
 
-		MaterialProperty<?> useNormalMap = material.getMaterialProperties().get(StandardShader.USE_NORMAL_MAP);
-		if (useNormalMap.getType().isAssignableFrom(Boolean.class)) {
-			((MaterialProperty<Boolean>) useNormalMap).value = true;
-		}
+        Property useNormalMap = material.getProperties().get(StandardShader.USE_NORMAL_MAP);
+        if (useNormalMap instanceof BoolProperty) {
+            ((BoolProperty) useNormalMap).value = true;
+        }
 
-		MaterialProperty<?> normalMap = material.getMaterialProperties().get(StandardShader.NORMAL_MAP);
-		if (normalMap.getType().isAssignableFrom(Texture2D.class)) {
-			((MaterialProperty<Texture2D>) normalMap).value = new Texture2D(InternalFormat.RGB, normal.getWidth(),
-					normal.getHeight(), PixelFormat.RGB, PixelType.UNSIGNED_SHORT, normal.getData(),
-					WrappingMode.REPEAT, FilteringMode.LINEAR);
-		}
+        Property normalMap = material.getProperties().get(StandardShader.NORMAL_MAP);
+        if (normalMap instanceof Texture2DProperty) {
+            ((Texture2DProperty) normalMap).value = new Texture2D(InternalFormat.RGB, normal.getWidth(),
+                    normal.getHeight(), PixelFormat.RGB, PixelType.UNSIGNED_SHORT, normal.getData(),
+                    WrappingMode.REPEAT, FilteringMode.LINEAR);
+        }
 
-		// Height
-		Image height = Image.loadImage(DemoImages.ROCK_HEIGHT.getURI());
+        // Height
+        Image height = Image.loadImage(DemoImages.ROCK_HEIGHT.getURI());
 
-		MaterialProperty<?> useHeightMap = material.getMaterialProperties().get(StandardShader.USE_HEIGHT_MAP);
-		if (useHeightMap.getType().isAssignableFrom(Boolean.class)) {
-			((MaterialProperty<Boolean>) useHeightMap).value = true;
-		}
+        Property useHeightMap = material.getProperties().get(StandardShader.USE_HEIGHT_MAP);
+        if (useHeightMap instanceof BoolProperty) {
+            ((BoolProperty) useHeightMap).value = true;
+        }
 
-		MaterialProperty<?> heightMap = material.getMaterialProperties().get(StandardShader.HEIGHT_MAP);
-		if (heightMap.getType().isAssignableFrom(Texture2D.class)) {
-			((MaterialProperty<Texture2D>) heightMap).value = new Texture2D(InternalFormat.RED, height.getWidth(),
-					height.getHeight(), PixelFormat.RED, PixelType.UNSIGNED_SHORT, height.getData(),
-					WrappingMode.REPEAT, FilteringMode.LINEAR);
-		}
+        Property heightMap = material.getProperties().get(StandardShader.HEIGHT_MAP);
+        if (heightMap instanceof Texture2DProperty) {
+            ((Texture2DProperty) heightMap).value = new Texture2D(InternalFormat.RED, height.getWidth(),
+                    height.getHeight(), PixelFormat.RED, PixelType.UNSIGNED_SHORT, height.getData(),
+                    WrappingMode.REPEAT, FilteringMode.LINEAR);
+        }
 
-		MaterialProperty<?> heightScale = material.getMaterialProperties().get(StandardShader.HEIGHT_SCALE);
-		if (heightScale.getType().isAssignableFrom(Float.class)) {
-			((MaterialProperty<Float>) heightScale).value = 0.1f;
-		}
-	}
+        Property heightScale = material.getProperties().get(StandardShader.HEIGHT_SCALE);
+        if (heightScale instanceof FloatProperty) {
+            ((FloatProperty) heightScale).value = 0.1f;
+        }
+    }
 
-	@Override
-	protected void processSystem() {
-		// TODO Auto-generated method stub
+    @Override
+    protected void processSystem() {
+        // TODO Auto-generated method stub
 
-	}
+    }
 
 }

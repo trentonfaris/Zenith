@@ -2,6 +2,7 @@ package com.trentonfaris.zenith.graphics;
 
 import com.trentonfaris.zenith.Zenith;
 import com.trentonfaris.zenith.graphics.shader.ShaderManager;
+import com.trentonfaris.zenith.utility.Disposable;
 import org.apache.logging.log4j.Level;
 import org.joml.Vector4f;
 import org.lwjgl.glfw.GLFW;
@@ -14,7 +15,7 @@ import org.lwjgl.opengl.GL13;
  *
  * @author Trenton Faris
  */
-public final class Graphics {
+public final class Graphics implements Disposable {
     /**
      * A flag which indicates if depth testing is enabled.
      */
