@@ -48,7 +48,7 @@ public class DemoCameraSystem extends BaseSystem {
 
 		if (input.isButton(GLFW.GLFW_MOUSE_BUTTON_2)) {
 			demoFPSControllerSystem.setEnabled(true);
-			GLFW.glfwSetInputMode(window.getHandle(), GLFW.GLFW_CURSOR, GLFW.GLFW_CURSOR_HIDDEN);
+			GLFW.glfwSetInputMode(window.getHandle(), GLFW.GLFW_CURSOR, GLFW.GLFW_CURSOR_DISABLED);
 		} else {
 			demoFPSControllerSystem.setEnabled(false);
 			GLFW.glfwSetInputMode(window.getHandle(), GLFW.GLFW_CURSOR, GLFW.GLFW_CURSOR_NORMAL);

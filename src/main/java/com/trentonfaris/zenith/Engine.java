@@ -8,90 +8,110 @@ import com.trentonfaris.zenith.resource.ModelLoader;
 import com.trentonfaris.zenith.resource.ResourceManager;
 import com.trentonfaris.zenith.resource.ShaderLoader;
 import com.trentonfaris.zenith.scene.SceneManager;
-import com.trentonfaris.zenith.time.Time;
+import com.trentonfaris.zenith.scheduler.Scheduler;
 import com.trentonfaris.zenith.window.Window;
+import org.apache.logging.log4j.Level;
 
 public final class Engine implements Runnable {
-	private final Graphics graphics = new Graphics();
-	private final Input input = new Input();
-	private final Time time = new Time();
-	private final Window window = new Window();
+    private static final int TICKS_PER_SEC = 60;
 
-	private final ResourceManager resourceManager = new ResourceManager();
-	private final SceneManager sceneManager = new SceneManager();
+    private Timer timer;
+    private final Graphics graphics = new Graphics();
+    private final Input input = new Input();
+    private final Scheduler scheduler = new Scheduler();
+    private final Window window = new Window();
 
-	private volatile boolean running;
+    private final ResourceManager resourceManager = new ResourceManager();
+    private final SceneManager sceneManager = new SceneManager();
 
-	Engine() {
-	}
+    private volatile boolean running;
+    private double accumulator = 0.0;
 
-	@Override
-	public void run() {
-		init();
-		loop();
+    Engine() {
+    }
+
+    @Override
+    public void run() {
+        init();
+        loop();
 		dispose();
-	}
+    }
 
-	private void init() {
-		time.init();
-		window.init();
-		input.init();
-		graphics.init();
+    private void init() {
+        Zenith.getLogger().log(Level.INFO, "Engine initializing...");
 
-		resourceManager.registerResourceLoader(ImageLoader.class);
-		resourceManager.registerResourceLoader(ModelLoader.class);
-		resourceManager.registerResourceLoader(ShaderLoader.class);
+        this.timer = Timer.getInstance();
 
-		this.running = true;
+        window.init();
+        input.init();
+        graphics.init();
 
-		Zenith.getEngine().getSceneManager().loadScene(DemoPlugin.class);
-	}
+        resourceManager.registerResourceLoader(ImageLoader.class);
+        resourceManager.registerResourceLoader(ModelLoader.class);
+        resourceManager.registerResourceLoader(ShaderLoader.class);
 
-	private void loop() {
-		while (running) {
-			time.update();
-			window.update();
-			input.update();
-			graphics.update();
-			sceneManager.update();
-		}
-	}
+        this.running = true;
 
-	private void dispose() {
-		sceneManager.unloadScene();
-		graphics.dispose();
-		window.dispose();
-	}
+        Zenith.getEngine().getSceneManager().loadScene(DemoPlugin.class);
+    }
 
-	public Graphics getGraphics() {
-		return graphics;
-	}
+    private void loop() {
+        while (running) {
+            timer.update();
 
-	public Input getInput() {
-		return input;
-	}
+            this.accumulator += timer.getDeltaTime();
 
-	public ResourceManager getResourceManager() {
-		return resourceManager;
-	}
+            while (accumulator >= timer.getFixedTimeStep()) {
+                timer.fixedUpdate();
+                // Do fixed time step updates here
+                this.accumulator -= timer.getFixedTimeStep();
+            }
 
-	public SceneManager getSceneManager() {
-		return sceneManager;
-	}
+            input.update();
 
-	public Time getTime() {
-		return time;
-	}
+            scheduler.update();
+            sceneManager.update();
 
-	public Window getWindow() {
-		return window;
-	}
+            window.update();
+            graphics.update();
+        }
+    }
 
-	public boolean isRunning() {
-		return running;
-	}
+    private void dispose() {
+        sceneManager.unloadScene();
+        graphics.dispose();
+        window.dispose();
+    }
 
-	void setRunning(boolean running) {
-		this.running = running;
-	}
+    public Graphics getGraphics() {
+        return graphics;
+    }
+
+    public Input getInput() {
+        return input;
+    }
+
+    public ResourceManager getResourceManager() {
+        return resourceManager;
+    }
+
+    public SceneManager getSceneManager() {
+        return sceneManager;
+    }
+
+    public Timer getTimer() {
+        return timer;
+    }
+
+    public Window getWindow() {
+        return window;
+    }
+
+    public boolean isRunning() {
+        return running;
+    }
+
+    void setRunning(boolean running) {
+        this.running = running;
+    }
 }

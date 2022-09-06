@@ -93,7 +93,7 @@ public class DemoAssetSystem extends BaseSystem {
 			((MaterialProperty<Boolean>) useAlbedoMap).value = true;
 		}
 
-		MaterialProperty<?> albedoMap = material.getMaterialProperties().get(StandardShader.USE_ALBEDO_MAP);
+		MaterialProperty<?> albedoMap = material.getMaterialProperties().get(StandardShader.ALBEDO_MAP);
 		if (albedoMap.getType().isAssignableFrom(Texture2D.class)) {
 			((MaterialProperty<Texture2D>) albedoMap).value = new Texture2D(InternalFormat.SRGB, albedo.getWidth(),
 					albedo.getHeight(), PixelFormat.RGB, PixelType.UNSIGNED_SHORT, albedo.getData(),

@@ -14,6 +14,7 @@ import com.trentonfaris.zenith.exception.ResourceIOException;
 import com.trentonfaris.zenith.exception.ResourceLoaderNotFoundException;
 import com.trentonfaris.zenith.exception.ResourceNotFoundException;
 import com.trentonfaris.zenith.utility.Copyable;
+import org.apache.logging.log4j.Level;
 
 /**
  * The {@link ResourceManager} is responsible for loading and caching resources from a
@@ -43,11 +44,7 @@ public final class ResourceManager {
 	 * for the specified resource loader's scheme.
 	 */
 	public <S extends Object, T extends ResourceLoader<S>> void registerResourceLoader(Class<T> resourceLoaderType) {
-		if (resourceLoaderType == null) {
-			String errorMsg = "Cannot register a ResourceLoader from a null resourceLoaderType.";
-			Zenith.getLogger().error(errorMsg);
-			throw new IllegalArgumentException(errorMsg);
-		}
+		Zenith.getLogger().log(Level.INFO, "Registering resource loader: " + resourceLoaderType.getSimpleName());
 
 		if (resourceLoaders.containsKey(resourceLoaderType)) {
 			Zenith.getLogger().warn(
@@ -71,6 +68,7 @@ public final class ResourceManager {
 
 		File file = new File(ResourceManager.RESOURCES_DIRECTORY.getPath() + File.separator + resourceLoader.getScheme());
 		if (!file.exists()) {
+			// TODO : handle return value
 			file.mkdir();
 		}
 	}
@@ -117,9 +115,7 @@ public final class ResourceManager {
 
 		T resource = cast(cache.get(realURI), realURI.getScheme());
 
-		if (resource instanceof Copyable) {
-			Copyable copyable = (Copyable) resource;
-
+		if (resource instanceof Copyable copyable) {
 			return cast(copyable.copy(), realURI.getScheme());
 		}
 

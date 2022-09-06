@@ -6,6 +6,5 @@ import java.util.List;
 import com.artemis.Component;
 
 public class RenderEffectLayer extends Component {
-	public final List<RenderEffect> renderEffects = Arrays.asList(new FXAAEffect(), new FilmicEffect(),
-			new GammaCorrectionEffect());
+    //public final List<RenderEffect> renderEffects = Arrays.asList(new FXAAEffect(), new FilmicEffect(), new GammaCorrectionEffect());
 }

@@ -1,7 +1,7 @@
 package com.trentonfaris.zenith.window;
 
-import java.nio.IntBuffer;
-
+import com.trentonfaris.zenith.Zenith;
+import org.apache.logging.log4j.Level;
 import org.joml.Vector2i;
 import org.lwjgl.glfw.Callbacks;
 import org.lwjgl.glfw.GLFW;
@@ -10,68 +10,65 @@ import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.system.MemoryStack;
 import org.lwjgl.system.MemoryUtil;
 
-import com.trentonfaris.zenith.Zenith;
-import com.trentonfaris.zenith.utility.Disposable;
-import com.trentonfaris.zenith.utility.Initializable;
-import com.trentonfaris.zenith.utility.Updatable;
+import java.nio.IntBuffer;
 
-public final class Window implements Disposable, Initializable, Updatable {
-	private long handle;
+public final class Window {
+    private long handle;
 
-	@Override
-	public void init() {
-		GLFWErrorCallback.createPrint(System.err).set();
+    public void init() {
+        Zenith.getLogger().log(Level.INFO, "Window initializing...");
 
-		if (!GLFW.glfwInit()) {
-			throw new IllegalStateException("Unable to init GLFW.");
-		}
+        GLFWErrorCallback.createPrint(System.err).set();
 
-		GLFWVidMode vidMode = GLFW.glfwGetVideoMode(GLFW.glfwGetPrimaryMonitor());
-		if (vidMode == null) {
-			String errorMsg = "Could not find the GLFW primary monitor.";
-			Zenith.getLogger().error(errorMsg);
-			throw new IllegalStateException(errorMsg);
-		}
+        if (!GLFW.glfwInit()) {
+            throw new IllegalStateException("Unable to init GLFW.");
+        }
 
-		int width = vidMode.width();
-		int height = vidMode.height();
+        GLFWVidMode vidMode = GLFW.glfwGetVideoMode(GLFW.glfwGetPrimaryMonitor());
+        if (vidMode == null) {
+            String errorMsg = "Could not find the GLFW primary monitor.";
+            Zenith.getLogger().error(errorMsg);
+            throw new IllegalStateException(errorMsg);
+        }
 
-		this.handle = GLFW.glfwCreateWindow(1920, 1080, "Zenith", /*GLFW.glfwGetPrimaryMonitor()*/MemoryUtil.NULL, MemoryUtil.NULL);
-		if (handle == MemoryUtil.NULL) {
-			throw new RuntimeException("Failed to create the GLFW window.");
-		}
-		
-		GLFW.glfwSetWindowPos(handle, 100, 100);
+        int width = vidMode.width();
+        int height = vidMode.height();
 
-		GLFW.glfwSetWindowCloseCallback(handle, (window) -> Zenith.stop());
-	}
+        // TODO : Move initial window sizes to configuration
+        this.handle = GLFW.glfwCreateWindow(1920, 1080, "Zenith", /*GLFW.glfwGetPrimaryMonitor()*/MemoryUtil.NULL, MemoryUtil.NULL);
+        if (handle == MemoryUtil.NULL) {
+            throw new RuntimeException("Failed to create the GLFW window.");
+        }
 
-	@Override
-	public void update() {
-		GLFW.glfwSwapBuffers(handle);
-	}
+        GLFW.glfwSetWindowPos(handle, 100, 100);
 
-	@Override
-	public void dispose() {
-		Callbacks.glfwFreeCallbacks(handle);
-		GLFW.glfwDestroyWindow(handle);
+        GLFW.glfwSetWindowCloseCallback(handle, (window) -> Zenith.stop());
+    }
 
-		GLFW.glfwTerminate();
-		GLFW.glfwSetErrorCallback(null).free();
-	}
+    public void update() {
+        GLFW.glfwSwapBuffers(handle);
+    }
 
-	public long getHandle() {
-		return handle;
-	}
+    public void dispose() {
+        Callbacks.glfwFreeCallbacks(handle);
+        GLFW.glfwDestroyWindow(handle);
 
-	public Vector2i getSize() {
-		try (MemoryStack stack = MemoryStack.stackPush()) {
-			IntBuffer pWidth = stack.mallocInt(1);
-			IntBuffer pHeight = stack.mallocInt(1);
+        GLFW.glfwTerminate();
+        GLFW.glfwSetErrorCallback(null).free();
+    }
 
-			GLFW.glfwGetWindowSize(handle, pWidth, pHeight);
+    public long getHandle() {
+        return handle;
+    }
 
-			return new Vector2i(pWidth.get(), pHeight.get());
-		}
-	}
+    public Vector2i getSize() {
+        try (MemoryStack stack = MemoryStack.stackPush()) {
+            IntBuffer pWidth = stack.mallocInt(1);
+            IntBuffer pHeight = stack.mallocInt(1);
+
+            GLFW.glfwGetWindowSize(handle, pWidth, pHeight);
+
+            return new Vector2i(pWidth.get(), pHeight.get());
+        }
+    }
 }

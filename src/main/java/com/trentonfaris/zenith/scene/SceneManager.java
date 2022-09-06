@@ -2,52 +2,50 @@ package com.trentonfaris.zenith.scene;
 
 import com.artemis.ArtemisPlugin;
 import com.trentonfaris.zenith.Zenith;
-import com.trentonfaris.zenith.utility.Updatable;
 
-public final class SceneManager implements Updatable {
-	private Scene scene;
+public final class SceneManager {
+    private Scene scene;
 
-	private final Object lock = new Object();
+    private final Object lock = new Object();
 
-	@Override
-	public void update() {
-		synchronized (lock) {
-			
-			if (scene != null) {
-				scene.update();
-			}
-		}
-	}
+    public void update() {
+        synchronized (lock) {
 
-	public <T extends ArtemisPlugin> void loadScene(Class<T> artemisPluginType) {
-		synchronized (lock) {
-			if (artemisPluginType == null) {
-				String errorMsg = "Cannot load a scene from a null artemisPluginType.";
-				Zenith.getLogger().error(errorMsg);
-				throw new IllegalArgumentException(errorMsg);
-			}
+            if (scene != null) {
+                scene.update();
+            }
+        }
+    }
 
-			unloadScene();
+    public <T extends ArtemisPlugin> void loadScene(Class<T> artemisPluginType) {
+        synchronized (lock) {
+            if (artemisPluginType == null) {
+                String errorMsg = "Cannot load a scene from a null artemisPluginType.";
+                Zenith.getLogger().error(errorMsg);
+                throw new IllegalArgumentException(errorMsg);
+            }
 
-			this.scene = new Scene(artemisPluginType);
+            unloadScene();
 
-			scene.load();
-		}
-	}
+            this.scene = new Scene(artemisPluginType);
 
-	public void unloadScene() {
-		synchronized (lock) {
-			if (scene != null) {
-				scene.unload();
+            scene.load();
+        }
+    }
 
-				this.scene = null;
-			}
-		}
-	}
+    public void unloadScene() {
+        synchronized (lock) {
+            if (scene != null) {
+                scene.unload();
 
-	public Scene getScene() {
-		synchronized (lock) {
-			return scene;
-		}
-	}
+                this.scene = null;
+            }
+        }
+    }
+
+    public Scene getScene() {
+        synchronized (lock) {
+            return scene;
+        }
+    }
 }
