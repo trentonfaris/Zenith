@@ -12,5 +12,6 @@ import com.trentonfaris.zenith.utility.Disposable;
  */
 public abstract class Property implements Copyable, Disposable {
 
+    @Override
     public abstract Property copy();
 }

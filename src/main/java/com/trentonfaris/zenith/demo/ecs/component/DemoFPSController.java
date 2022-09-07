@@ -5,5 +5,5 @@ import com.artemis.Component;
 public class DemoFPSController extends Component {
 	public float moveSpeed = 10;
 	public float turnSpeed = 90;
-	public float turnSensitivity = 1;
+	public float turnSensitivity = 1.2f;
 }

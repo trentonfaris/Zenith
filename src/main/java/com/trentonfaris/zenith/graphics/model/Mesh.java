@@ -2,6 +2,7 @@ package com.trentonfaris.zenith.graphics.model;
 
 import com.trentonfaris.zenith.Zenith;
 import com.trentonfaris.zenith.graphics.material.Material;
+import com.trentonfaris.zenith.graphics.model.attribute.*;
 import com.trentonfaris.zenith.utility.Copyable;
 import com.trentonfaris.zenith.utility.Disposable;
 import org.joml.Vector2f;
@@ -67,7 +68,7 @@ public final class Mesh implements Copyable, Disposable {
      * {@link PrimitiveType}, and {@link Material}.
      *
      * @param vertices The list of vertices of this {@link Mesh}
-     * @param indices The list of indices of this {@link Mesh}
+     * @param indices  The list of indices of this {@link Mesh}
      * @param material The {@link Material} used to draw this {@link Mesh}
      */
     public Mesh(List<Vertex> vertices, List<Integer> indices, PrimitiveType primitiveType, Material material) {
@@ -78,11 +79,11 @@ public final class Mesh implements Copyable, Disposable {
         }
 
         // Validate that all vertices have the same attributes.
-        List<Attribute<?>> attributes = vertices.get(0).getAttributes();
+        List<Attribute> attributes = vertices.get(0).getAttributes();
         for (int i = 1; i < vertices.size(); i++) {
             Vertex vertex = vertices.get(i);
 
-            List<Attribute<?>> vertexAttributes = vertex.getAttributes();
+            List<Attribute> vertexAttributes = vertex.getAttributes();
             if (attributes.size() != vertexAttributes.size()) {
                 String errorMsg = "Cannot create a Mesh from a list of vertices with different numbers of attributes. Create a separate Mesh for each set of vertices with different numbers of attributes.";
                 Zenith.getLogger().error(errorMsg);
@@ -90,8 +91,13 @@ public final class Mesh implements Copyable, Disposable {
             }
 
             for (int j = 0; j < vertexAttributes.size(); j++) {
-                if (!vertexAttributes.get(j).getValue().getClass()
-                        .isAssignableFrom(attributes.get(j).getValue().getClass())) {
+                Attribute attribute = attributes.get(j);
+                Attribute vertexAttribute = vertexAttributes.get(j);
+
+                if (!((attribute instanceof FloatAttribute && vertexAttribute instanceof FloatAttribute) ||
+                        (attribute instanceof Vec2Attribute && vertexAttribute instanceof Vec2Attribute) ||
+                        (attribute instanceof Vec3Attribute && vertexAttribute instanceof Vec3Attribute) ||
+                        (attribute instanceof Vec4Attribute && vertexAttribute instanceof Vec4Attribute))) {
                     String errorMsg = "Cannot create a Mesh from a list of vertices with different attribute types. Create a separate Mesh for each set of vertices with different attribute data types.";
                     Zenith.getLogger().error(errorMsg);
                     throw new IllegalArgumentException(errorMsg);
@@ -152,17 +158,17 @@ public final class Mesh implements Copyable, Disposable {
             FloatBuffer pVector4f = stack.mallocFloat(4);
 
             for (Vertex vertex : vertices) {
-                for (Attribute<?> attribute : vertex.getAttributes()) {
-                    if (attribute.getValue() instanceof Float) {
-                        pVertices.put((float) attribute.getValue());
-                    } else if (attribute.getValue() instanceof Vector2f) {
-                        pVertices.put(((Vector2f) attribute.getValue()).get(pVector2f));
+                for (Attribute attribute : vertex.getAttributes()) {
+                    if (attribute instanceof FloatAttribute floatAttribute) {
+                        pVertices.put(floatAttribute.value);
+                    } else if (attribute instanceof Vec2Attribute vec2Attribute) {
+                        pVertices.put((vec2Attribute.value).get(pVector2f));
                         pVector2f.clear();
-                    } else if (attribute.getValue() instanceof Vector3f) {
-                        pVertices.put(((Vector3f) attribute.getValue()).get(pVector3f));
+                    } else if (attribute instanceof Vec3Attribute vec3Attribute) {
+                        pVertices.put((vec3Attribute.value).get(pVector3f));
                         pVector3f.clear();
-                    } else if (attribute.getValue() instanceof Vector4f) {
-                        pVertices.put(((Vector4f) attribute.getValue()).get(pVector4f));
+                    } else if (attribute instanceof Vec4Attribute vec4Attribute) {
+                        pVertices.put((vec4Attribute.value).get(pVector4f));
                         pVector4f.clear();
                     }
                 }

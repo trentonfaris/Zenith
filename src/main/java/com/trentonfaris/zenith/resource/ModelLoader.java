@@ -8,6 +8,9 @@ import com.trentonfaris.zenith.graphics.material.property.FloatProperty;
 import com.trentonfaris.zenith.graphics.material.property.Property;
 import com.trentonfaris.zenith.graphics.material.property.Vec3Property;
 import com.trentonfaris.zenith.graphics.model.*;
+import com.trentonfaris.zenith.graphics.model.attribute.Attribute;
+import com.trentonfaris.zenith.graphics.model.attribute.Vec2Attribute;
+import com.trentonfaris.zenith.graphics.model.attribute.Vec3Attribute;
 import com.trentonfaris.zenith.graphics.shader.StandardShader;
 import com.trentonfaris.zenith.utility.Utility;
 import org.joml.Vector2f;
@@ -110,30 +113,30 @@ public final class ModelLoader extends ResourceLoader<Model> {
     private Mesh processMesh(AIMesh aiMesh, AIScene aiScene) {
         List<Vertex> vertices = new ArrayList<>();
         for (int i = 0; i < aiMesh.mNumVertices(); i++) {
-            List<Attribute<?>> attributes = new ArrayList<Attribute<?>>();
+            List<Attribute> attributes = new ArrayList<>();
 
             // Position attribute
             AIVector3D aiPosition = aiMesh.mVertices().get(i);
-            attributes.add(new Attribute<Vector3f>(new Vector3f(aiPosition.x(), aiPosition.y(), aiPosition.z())));
+            attributes.add(new Vec3Attribute(new Vector3f(aiPosition.x(), aiPosition.y(), aiPosition.z())));
 
             // UV attribute
             if (aiMesh.mNumUVComponents().get(0) > 0) {
                 AIVector3D aiTexCoord = aiMesh.mTextureCoords(0).get(i);
-                attributes.add(new Attribute<Vector2f>(new Vector2f(aiTexCoord.x(), aiTexCoord.y())));
+                attributes.add(new Vec2Attribute(new Vector2f(aiTexCoord.x(), aiTexCoord.y())));
             }
 
             // Normal attribute
             AIVector3D aiNormal = aiMesh.mNormals().get(i);
-            attributes.add(new Attribute<Vector3f>(new Vector3f(aiNormal.x(), aiNormal.y(), aiNormal.z()).normalize()));
+            attributes.add(new Vec3Attribute(new Vector3f(aiNormal.x(), aiNormal.y(), aiNormal.z()).normalize()));
 
             // Tangent attribute
             AIVector3D aiTangent = aiMesh.mTangents().get(i);
             attributes.add(
-                    new Attribute<Vector3f>(new Vector3f(aiTangent.x(), aiTangent.y(), aiTangent.z()).normalize()));
+                    new Vec3Attribute(new Vector3f(aiTangent.x(), aiTangent.y(), aiTangent.z()).normalize()));
 
             // Bitangent attribute
             AIVector3D aiBitangent = aiMesh.mBitangents().get(i);
-            attributes.add(new Attribute<Vector3f>(
+            attributes.add(new Vec3Attribute(
                     new Vector3f(aiBitangent.x(), aiBitangent.y(), aiBitangent.z()).normalize()));
 
             vertices.add(new Vertex(attributes));

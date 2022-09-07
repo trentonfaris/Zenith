@@ -14,8 +14,6 @@ import com.trentonfaris.zenith.window.Window;
 import org.apache.logging.log4j.Level;
 
 public final class Engine implements Runnable {
-    private static final int TICKS_PER_SEC = 60;
-
     private final Time time = new Time();
     private final Graphics graphics = new Graphics();
     private final Input input = new Input();
