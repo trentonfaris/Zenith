@@ -8,8 +8,8 @@ public abstract class Renderer {
 	/**
 	 * Draws the {@link World} from the perspective of the {@link Camera}.
 	 * 
-	 * @param world
-	 * @param cameraId
+	 * @param world The target {@link World}
+	 * @param cameraId The id of the target {@link Camera}
 	 */
 	public abstract void render(World world, int cameraId);
 }

@@ -1,9 +1,12 @@
 package com.trentonfaris.zenith.resource.resources;
 
+import com.trentonfaris.zenith.graphics.shader.Shader;
 import com.trentonfaris.zenith.graphics.texture.Cubemap;
 import com.trentonfaris.zenith.graphics.texture.Texture2D;
 import com.trentonfaris.zenith.resource.ShaderLoader;
 import com.trentonfaris.zenith.utility.Utility;
+
+import java.net.URI;
 
 /**
  * The {@link Shaders} {@code enum} contains {@code String} URIs to various
@@ -49,7 +52,7 @@ public enum Shaders {
 	/**
 	 * Creates a new {@link Shaders} from the specified {@code String} URI.
 	 *
-	 * @param uri
+	 * @param uri The {@link URI} of the {@link Shader} to load
 	 */
 	Shaders(String uri) {
 		this.uri = uri;

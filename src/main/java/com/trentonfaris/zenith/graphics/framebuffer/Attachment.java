@@ -54,7 +54,7 @@ public enum Attachment {
 	/**
 	 * Creates a new {@link Attachment} from the specified OpenGL value.
 	 *
-	 * @param value
+	 * @param value The target OpenGL value.
 	 */
 	Attachment(int value) {
 		this.value = value;

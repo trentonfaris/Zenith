@@ -187,7 +187,7 @@ public final class Texture2D extends Texture implements RenderTarget {
      * Sets the {@link #width}. It is recommended to {@link #update()} after setting
      * the {@link #width}.
      *
-     * @param width
+     * @param width The target width
      */
     public void setWidth(int width) {
         this.width = width;
@@ -206,7 +206,7 @@ public final class Texture2D extends Texture implements RenderTarget {
      * Sets the {@link #height}. It is recommended to {@link #update()} after
      * setting the {@link #height}.
      *
-     * @param height
+     * @param height The target height
      */
     public void setHeight(int height) {
         this.height = height;

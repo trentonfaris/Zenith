@@ -133,7 +133,7 @@ public class Input {
      * Registers an {@link Axis} with this {@link Input}. If an association for the
      * {@link Axis} name already exists, it will be overridden.
      *
-     * @param axis
+     * @param axis The target {@link Axis} to register
      */
     public void registerAxis(Axis axis) {
         if (axis == null) {
@@ -149,7 +149,7 @@ public class Input {
     /**
      * Removes an {@link Axis} from this {@link Input}, if it has been registered.
      *
-     * @param name
+     * @param name The name of the {@link Axis} to remove
      */
     public void removeAxis(String name) {
         if (name == null) {
@@ -164,7 +164,7 @@ public class Input {
      * Gets the value of the specified {@link Axis}. Unregistered axes return a
      * value of 0.
      *
-     * @param name
+     * @param name The name of the {@link Axis} to retrieve
      * @return The value of the specified {@link Axis}.
      */
     public float getAxis(String name) {

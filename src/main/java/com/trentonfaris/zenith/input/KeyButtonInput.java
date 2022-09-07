@@ -33,8 +33,8 @@ public final class KeyButtonInput {
 	 * Creates a new {@link KeyButtonInput} with the specified {@link KeyButtonType}
 	 * and value.
 	 *
-	 * @param keyButtonType
-	 * @param value
+	 * @param keyButtonType The {@link KeyButtonType} of this {@link KeyButtonInput}
+	 * @param value The value of this {@link KeyButtonInput}
 	 */
 	public KeyButtonInput(KeyButtonType keyButtonType, int value) {
 		if (keyButtonType == null) {
@@ -59,7 +59,7 @@ public final class KeyButtonInput {
 	/**
 	 * Sets the {@link #keyButtonType}.
 	 *
-	 * @param keyButtonType
+	 * @param keyButtonType The target {@link KeyButtonType}
 	 */
 	public void setKeyButtonType(KeyButtonType keyButtonType) {
 		if (keyButtonType == null) {
@@ -83,7 +83,7 @@ public final class KeyButtonInput {
 	/**
 	 * Sets the {@link #value}.
 	 *
-	 * @param value
+	 * @param value The target value
 	 */
 	public void setValue(int value) {
 		this.value = value;

@@ -8,6 +8,7 @@ import com.trentonfaris.zenith.graphics.shader.uniform.UniformType;
 import com.trentonfaris.zenith.utility.Disposable;
 import org.lwjgl.opengl.GL20;
 
+import java.net.URI;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -33,7 +34,7 @@ public abstract class Shader implements Disposable {
     /**
      * Creates a new {@link Shader} from the specified URI.
      *
-     * @param uri The URI of the shader to load
+     * @param uri The {@link URI} of the shader to load
      */
     Shader(String uri) {
         int resource;

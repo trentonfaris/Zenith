@@ -34,7 +34,7 @@ public enum PixelFormat {
 	/**
 	 * Creates a new {@link PixelFormat} from the specified OpenGL value.
 	 *
-	 * @param value
+	 * @param value The underlying value of this enum
 	 */
 	PixelFormat(int value) {
 		this.value = value;

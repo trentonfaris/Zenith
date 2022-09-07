@@ -30,9 +30,9 @@ public abstract class Uniform {
 	 * Creates a new {@link Uniform} from the program, name, {@link UniformType} and
 	 * {@link UniformType}.
 	 *
-	 * @param program
-	 * @param name
-	 * @param uniformType
+	 * @param program The OpenGL program value of the {@link Shader}
+	 * @param name The name of this {@link Uniform}
+	 * @param uniformType The {@link UniformType} of this {@link Uniform}
 	 */
 	public Uniform(int program, String name, UniformType uniformType) {
 		if (name == null || name.isEmpty()) {

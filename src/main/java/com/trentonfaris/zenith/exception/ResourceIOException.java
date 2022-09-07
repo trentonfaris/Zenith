@@ -1,6 +1,7 @@
 package com.trentonfaris.zenith.exception;
 
 import java.io.IOException;
+import java.io.Serial;
 
 /**
  * A {@link ResourceIOException} indicates that a resource cannot be read.
@@ -8,12 +9,13 @@ import java.io.IOException;
  * @author Trenton Faris
  */
 public class ResourceIOException extends IOException {
+	@Serial
 	private static final long serialVersionUID = -2623855150564843216L;
 
 	/**
 	 * Creates a new {@link ResourceIOException} with the specified resource.
 	 *
-	 * @param resource
+	 * @param resource The resource that could not be read
 	 */
 	public ResourceIOException(String resource) {
 		super("Cannot read the resource: " + resource);

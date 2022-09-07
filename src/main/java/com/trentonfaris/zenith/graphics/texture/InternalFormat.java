@@ -135,7 +135,7 @@ public enum InternalFormat {
 	/**
 	 * Creates a new {@link InternalFormat} from the specified OpenGL value.
 	 *
-	 * @param value
+	 * @param value The underlying value of the enum
 	 */
 	InternalFormat(int value) {
 		this.value = value;

@@ -131,11 +131,9 @@ public final class ForwardRenderer extends Renderer {
 					for (Entry<String, Uniform> entry : uniforms.entrySet()) {
 						Uniform uniform = entry.getValue();
 
-						if (!(uniform instanceof Mat4Uniform)) {
+						if (!(uniform instanceof Mat4Uniform mat4Uniform)) {
 							continue;
 						}
-
-						Mat4Uniform mat4Uniform = (Mat4Uniform) uniform;
 
 						if (uniform.getUniformType() == UniformType.MODEL_MATRIX) {
 							mat4Uniform.set(modelMatrix.mat);
@@ -152,19 +150,16 @@ public final class ForwardRenderer extends Renderer {
 						}
 					}
 
-					if (shader instanceof ForwardLitShader) {
-						ForwardLitShader forwardLitShader = (ForwardLitShader) shader;
+					if (shader instanceof ForwardLitShader forwardLitShader) {
 
 						LightSystem lightSystem = world.getSystem(LightSystem.class);
 
 						for (Entry<String, Uniform> entry : uniforms.entrySet()) {
 							Uniform uniform = entry.getValue();
 
-							if (!(uniform instanceof Vec3Uniform)) {
+							if (!(uniform instanceof Vec3Uniform vec3Uniform)) {
 								continue;
 							}
-
-							Vec3Uniform vec3Uniform = (Vec3Uniform) uniform;
 
 							if (uniform.getUniformType() == UniformType.AMBIENT_COLOR) {
 								vec3Uniform.set(lightSystem.getAmbientColor());
@@ -363,7 +358,7 @@ public final class ForwardRenderer extends Renderer {
 	/**
 	 * Sets the number of lights to render per-fragment.
 	 * 
-	 * @param numFragLights
+	 * @param numFragLights The target number of per-fragment lights
 	 */
 	public void setNumFragLights(int numFragLights) {
 		this.numFragLights = numFragLights;

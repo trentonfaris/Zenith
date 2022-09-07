@@ -25,7 +25,7 @@ public final class MouseMovementAxis extends Axis {
 	 * Creates a new {@link MouseMovementAxis} from the specified name and default
 	 * {@link MouseAxis} and sensitivity.
 	 *
-	 * @param name
+	 * @param name The name of this {@link MouseMovementAxis}
 	 */
 	public MouseMovementAxis(String name) {
 		this(name, DEFAULT_MOUSE_AXIS, DEFAULT_SENSITIVITY);
@@ -35,9 +35,9 @@ public final class MouseMovementAxis extends Axis {
 	 * Creates a new {@link MouseMovementAxis} from the specified name,
 	 * {@link MouseAxis}, and sensitivity.
 	 *
-	 * @param name
-	 * @param mouseAxis
-	 * @param sensitivity
+	 * @param name The name of this {@link MouseMovementAxis}
+	 * @param mouseAxis The {@link MouseAxis} of this {@link MouseMovementAxis}
+	 * @param sensitivity The sensitivity of this {@link MouseMovementAxis}
 	 */
 	public MouseMovementAxis(String name, MouseAxis mouseAxis, float sensitivity) {
 		super(name);
@@ -64,7 +64,7 @@ public final class MouseMovementAxis extends Axis {
 	/**
 	 * Sets the {@link #mouseAxis}.
 	 *
-	 * @param mouseAxis
+	 * @param mouseAxis The target {@link MouseAxis}
 	 */
 	public void setMouseAxis(MouseAxis mouseAxis) {
 		if (mouseAxis == null) {
@@ -88,7 +88,7 @@ public final class MouseMovementAxis extends Axis {
 	/**
 	 * Sets the {@link #sensitivity}.
 	 *
-	 * @param sensitivity
+	 * @param sensitivity The target sensitivity
 	 */
 	public void setSensitivity(float sensitivity) {
 		this.sensitivity = sensitivity;

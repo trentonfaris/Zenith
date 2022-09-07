@@ -83,7 +83,7 @@ public final class ShaderLoader extends ResourceLoader<Integer> {
 			try {
 				List<String> lines = Files.readAllLines(Paths.get(file.toURI()));
 				for (String line : lines) {
-					sb.append(line + "\n");
+					sb.append(line).append("\n");
 				}
 			} catch (IOException e) {
 				Zenith.getLogger().error("Cannot read the resource: " + pathWithExt);
@@ -155,10 +155,10 @@ public final class ShaderLoader extends ResourceLoader<Integer> {
 	/**
 	 * Compiles a shader of specified type.
 	 *
-	 * @param type
-	 * @param source
+	 * @param type The type of shader to be compiled
+	 * @param source The source of the shader to be compiled
 	 * @return A shader, which may or may not be compiled successfully.
-	 * @throws ResourceIOException
+	 * @throws ResourceIOException A throwable {@link ResourceIOException}
 	 */
 	private int compileShader(int type, String source) throws IOException {
 		int shader = GL20.glCreateShader(type);

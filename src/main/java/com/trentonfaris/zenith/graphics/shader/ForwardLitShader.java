@@ -1,5 +1,6 @@
 package com.trentonfaris.zenith.graphics.shader;
 
+import java.net.URI;
 import java.nio.FloatBuffer;
 import java.util.Set;
 
@@ -54,7 +55,7 @@ public abstract class ForwardLitShader extends Shader {
 	/**
 	 * Creates a new {@link ForwardLitShader} from the specified {@code String} URI.
 	 *
-	 * @param uri
+	 * @param uri The {@link URI} of the shader to load
 	 */
 	ForwardLitShader(String uri) {
 		super(uri);
@@ -76,8 +77,8 @@ public abstract class ForwardLitShader extends Shader {
 	 * Sets the per-vertex lights. Only the first {@link #MAX_NUM_VERT_LIGHTS} will
 	 * be considered. Any others will be ignored.
 	 *
-	 * @param world
-	 * @param vertLights
+	 * @param world The target {@link World}
+	 * @param vertLights The set of per-vertex lights to be drawn
 	 */
 	public final void setVertLights(World world, Set<Entity> vertLights) {
 		if (vertLights == null) {
@@ -185,8 +186,8 @@ public abstract class ForwardLitShader extends Shader {
 	/**
 	 * Sets the per-fragment light.
 	 *
-	 * @param world
-	 * @param fragLight
+	 * @param world The target {@link World}
+	 * @param fragLight The set of per-fragment lights to be drawn
 	 */
 	public final void setFragLight(World world, Entity fragLight) {
 		if (fragLight == null) {

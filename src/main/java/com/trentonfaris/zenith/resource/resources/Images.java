@@ -1,7 +1,10 @@
 package com.trentonfaris.zenith.resource.resources;
 
+import com.trentonfaris.zenith.image.Image;
 import com.trentonfaris.zenith.resource.ImageLoader;
 import com.trentonfaris.zenith.utility.Utility;
+
+import java.net.URI;
 
 /**
  * The {@link Images} {@code enum} contains {@code String} URIs to various image
@@ -40,7 +43,7 @@ public enum Images {
 	/**
 	 * Creates a new {@link Images} from the specified {@code String} URI.
 	 *
-	 * @param uri
+	 * @param uri The {@link URI} of the {@link Image} to load
 	 */
 	Images(String uri) {
 		this.uri = uri;

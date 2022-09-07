@@ -332,7 +332,7 @@ public final class Graphics implements Disposable {
     /**
      * Sets the color to use when clearing the color buffer.
      *
-     * @param clearColor
+     * @param clearColor The target color used to clear the color buffer
      */
     public void setClearColor(Vector4f clearColor) {
         this.clearColor = clearColor;

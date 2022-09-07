@@ -26,7 +26,7 @@ public enum WrappingMode {
 	/**
 	 * Creates a new {@link WrappingMode} from the specified OpenGL value.
 	 *
-	 * @param value
+	 * @param value The underlying value of this enum
 	 */
 	WrappingMode(int value) {
 		this.value = value;

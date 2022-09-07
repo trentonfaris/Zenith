@@ -81,8 +81,8 @@ public final class ModelLoader extends ResourceLoader<Model> {
     /**
      * Recursively process the nodes in the scene.
      *
-     * @param aiNode
-     * @param aiScene
+     * @param aiNode The {@link AINode} to be processed
+     * @param aiScene The {@link AIScene} to be processed
      * @return A list of meshes.
      */
     private List<Mesh> processNode(AINode aiNode, AIScene aiScene) {
@@ -103,8 +103,8 @@ public final class ModelLoader extends ResourceLoader<Model> {
     /**
      * Process a mesh.
      *
-     * @param aiMesh
-     * @param aiScene
+     * @param aiMesh The {@link AIMesh} to be processed
+     * @param aiScene The {@link AIScene} to be processed
      * @return The processed {@link Mesh}.
      */
     private Mesh processMesh(AIMesh aiMesh, AIScene aiScene) {

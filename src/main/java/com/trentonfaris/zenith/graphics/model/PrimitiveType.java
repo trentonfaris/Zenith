@@ -27,7 +27,7 @@ public enum PrimitiveType {
 	/**
 	 * Creates a new {@link PrimitiveType} from the specified OpenGL value.
 	 *
-	 * @param value
+	 * @param value The underlying value of this enum
 	 */
 	PrimitiveType(int value) {
 		this.value = value;

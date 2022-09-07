@@ -20,7 +20,7 @@ public enum FilteringMode {
 	/**
 	 * Creates a new {@link FilteringMode} from the specified OpenGL value.
 	 *
-	 * @param value
+	 * @param value The target OpenGL value.
 	 */
 	FilteringMode(int value) {
 		this.value = value;

@@ -1,7 +1,10 @@
 package com.trentonfaris.zenith.resource.resources;
 
+import com.trentonfaris.zenith.graphics.model.Model;
 import com.trentonfaris.zenith.resource.ModelLoader;
 import com.trentonfaris.zenith.utility.Utility;
+
+import java.net.URI;
 
 /**
  * The {@link Models} {@code enum} contains {@code String} URIs to various model
@@ -25,7 +28,7 @@ public enum Models {
 	/**
 	 * Creates a new {@link Models} from the specified {@code String} URI.
 	 *
-	 * @param uri
+	 * @param uri The {@link URI} of the {@link Model} to load
 	 */
 	Models(String uri) {
 		this.uri = uri;

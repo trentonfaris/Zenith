@@ -31,9 +31,9 @@ public final class Renderbuffer implements RenderTarget {
     /**
      * Creates a new {@link Renderbuffer} from the specified {@link InternalFormat}, width, and height.
      *
-     * @param internalFormat
-     * @param width
-     * @param height
+     * @param internalFormat The {@link InternalFormat} of this {@link Renderbuffer}
+     * @param width The width of this {@link Renderbuffer}
+     * @param height The height of this {@link Renderbuffer}
      */
     public Renderbuffer(InternalFormat internalFormat, int width, int height) {
         if (internalFormat == null) {

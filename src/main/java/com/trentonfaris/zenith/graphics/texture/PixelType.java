@@ -30,10 +30,10 @@ public enum PixelType {
 
 	/**
 	 * Creates a new {@link PixelFormat} from the specified OpenGL value.
-	 * 
-	 * @param <T>
-	 * @param value
-	 * @param bufferType
+	 *
+	 * @param value The underlying value of this enum
+	 * @param bufferType A class associated with this enum
+	 * @param <T> A generic encapsulating the  class type
 	 */
 	<T extends Buffer> PixelType(int value, Class<T> bufferType) {
 		this.value = value;

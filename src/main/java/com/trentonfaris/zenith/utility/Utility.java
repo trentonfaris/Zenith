@@ -19,9 +19,9 @@ public final class Utility {
 	/**
 	 * Gets a {@link File} from a location.
 	 *
-	 * @param path
+	 * @param path The target file path
 	 * @return The {@link File}.
-	 * @throws FileNotFoundException
+	 * @throws FileNotFoundException A throwable {@link FileNotFoundException}
 	 */
 	public static File getFile(String path) throws FileNotFoundException {
 		File file = new File(path);
@@ -36,9 +36,9 @@ public final class Utility {
 	/**
 	 * Gets a temporary {@link File} from a packaged location.
 	 *
-	 * @param path
+	 * @param path The target file path
 	 * @return The temporary {@link File}.
-	 * @throws IOException
+	 * @throws IOException A throwable {@link IOException}
 	 */
 	public static File getPackagedFile(String path) throws IOException {
 		InputStream in = ClassLoader.getSystemClassLoader().getResourceAsStream(path);
