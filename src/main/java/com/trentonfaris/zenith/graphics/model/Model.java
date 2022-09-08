@@ -42,7 +42,7 @@ public final class Model implements Copyable, Disposable {
     public static Model loadModel(String uri) {
         Model resource;
         try {
-            resource = Zenith.getEngine().getResourceManager().getResource(uri);
+            resource = Zenith.getEngine().getResourceManager().getResource(uri, Model.class);
         } catch (ResourceNotFoundException | ResourceIOException e) {
             String errorMsg = "Cannot create a Model from URI: " + uri;
             Zenith.getLogger().error(errorMsg, e);

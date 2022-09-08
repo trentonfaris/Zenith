@@ -80,7 +80,7 @@ public final class Image implements Copyable, Disposable {
     public static Image loadImage(String uri) {
         Image resource;
         try {
-            resource = Zenith.getEngine().getResourceManager().getResource(uri);
+            resource = Zenith.getEngine().getResourceManager().getResource(uri, Image.class);
         } catch (ResourceNotFoundException | ResourceIOException e) {
             String errorMsg = "Cannot create an Image from URI: " + uri;
             Zenith.getLogger().error(errorMsg, e);

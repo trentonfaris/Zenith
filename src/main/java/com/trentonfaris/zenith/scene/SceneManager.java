@@ -10,7 +10,6 @@ public final class SceneManager {
 
     public void update() {
         synchronized (lock) {
-
             if (scene != null) {
                 scene.update();
             }

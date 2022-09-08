@@ -32,7 +32,7 @@ public final class Engine implements Runnable {
     public void run() {
         init();
         loop();
-		dispose();
+        dispose();
     }
 
     private void init() {

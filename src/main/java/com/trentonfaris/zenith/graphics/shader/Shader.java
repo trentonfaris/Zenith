@@ -39,7 +39,7 @@ public abstract class Shader implements Disposable {
     Shader(String uri) {
         int resource;
         try {
-            resource = Zenith.getEngine().getResourceManager().getResource(uri);
+            resource = Zenith.getEngine().getResourceManager().getResource(uri, Integer.class);
         } catch (ResourceNotFoundException | ResourceIOException e) {
             String errorMsg = "Cannot create a Shader from URI: " + uri;
             Zenith.getLogger().error(errorMsg, e);

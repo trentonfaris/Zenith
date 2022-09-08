@@ -8,7 +8,7 @@ public class DemoApp {
     public static void main(String[] args) {
         Zenith.start();
 
-        // TODO : Need to protect engine access from the mainThread
+        // This doesn't work because this thread doesn't have a current GL context
 //        Zenith.getEngine().getSceneManager().loadScene(DemoPlugin.class);
     }
 }
