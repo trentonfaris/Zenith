@@ -17,11 +17,10 @@ public final class Engine implements Runnable {
     private final Time time = new Time();
     private final Graphics graphics = new Graphics();
     private final Input input = new Input();
-    private final Scheduler scheduler = new Scheduler();
-    private final Window window = new Window();
-
     private final ResourceManager resourceManager = new ResourceManager();
     private final SceneManager sceneManager = new SceneManager();
+    private final Scheduler scheduler = new Scheduler();
+    private final Window window = new Window();
 
     private volatile boolean running;
     private double accumulator = 0.0;
@@ -82,9 +81,7 @@ public final class Engine implements Runnable {
         resourceManager.removeResourceLoader(ModelLoader.class);
         resourceManager.removeResourceLoader(ImageLoader.class);
 
-        // TODO : Implement this function
         resourceManager.dispose();
-
         graphics.dispose();
         window.dispose();
     }

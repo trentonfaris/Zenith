@@ -1,6 +1,7 @@
 package com.trentonfaris.zenith.window;
 
 import com.trentonfaris.zenith.Zenith;
+import com.trentonfaris.zenith.utility.Disposable;
 import org.apache.logging.log4j.Level;
 import org.joml.Vector2i;
 import org.lwjgl.glfw.Callbacks;
@@ -12,7 +13,7 @@ import org.lwjgl.system.MemoryUtil;
 
 import java.nio.IntBuffer;
 
-public final class Window {
+public final class Window implements Disposable {
     private long handle;
 
     public void init() {
@@ -49,6 +50,7 @@ public final class Window {
         GLFW.glfwSwapBuffers(handle);
     }
 
+    @Override
     public void dispose() {
         Callbacks.glfwFreeCallbacks(handle);
         GLFW.glfwDestroyWindow(handle);

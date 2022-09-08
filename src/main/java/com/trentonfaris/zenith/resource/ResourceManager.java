@@ -1,5 +1,13 @@
 package com.trentonfaris.zenith.resource;
 
+import com.trentonfaris.zenith.Zenith;
+import com.trentonfaris.zenith.exception.ResourceIOException;
+import com.trentonfaris.zenith.exception.ResourceLoaderNotFoundException;
+import com.trentonfaris.zenith.exception.ResourceNotFoundException;
+import com.trentonfaris.zenith.utility.Copyable;
+import com.trentonfaris.zenith.utility.Disposable;
+import org.apache.logging.log4j.Level;
+
 import java.io.File;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -8,14 +16,6 @@ import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import com.trentonfaris.zenith.Zenith;
-import com.trentonfaris.zenith.exception.ResourceIOException;
-import com.trentonfaris.zenith.exception.ResourceLoaderNotFoundException;
-import com.trentonfaris.zenith.exception.ResourceNotFoundException;
-import com.trentonfaris.zenith.utility.Copyable;
-import com.trentonfaris.zenith.utility.Disposable;
-import org.apache.logging.log4j.Level;
 
 /**
  * The {@link ResourceManager} is responsible for loading and caching resources from a
@@ -40,8 +40,15 @@ public final class ResourceManager implements Disposable {
 		}
 	}
 
+	@Override
 	public void dispose() {
+		for (Object object : cache.values()) {
+			if (object instanceof Disposable disposable) {
+				disposable.dispose();
+			}
+		}
 
+		cache.clear();
 	}
 
 	/**
