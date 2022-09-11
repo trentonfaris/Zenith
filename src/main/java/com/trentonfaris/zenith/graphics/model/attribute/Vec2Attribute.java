@@ -1,13 +1,20 @@
 package com.trentonfaris.zenith.graphics.model.attribute;
 
+import com.trentonfaris.zenith.Zenith;
 import org.joml.Vector2f;
 
 import java.util.Objects;
 
 public final class Vec2Attribute extends Attribute {
-    public Vector2f value;
+    private final Vector2f value;
 
     public Vec2Attribute(Vector2f value) {
+        if (value == null) {
+            String errorMsg = "Cannot create a Vec2Attribute from a null value.";
+            Zenith.getLogger().error(errorMsg);
+            throw new IllegalArgumentException(errorMsg);
+        }
+
         this.value = value;
     }
 
@@ -19,6 +26,10 @@ public final class Vec2Attribute extends Attribute {
     @Override
     public int getSize() {
         return 2;
+    }
+
+    public Vector2f getValue() {
+        return value;
     }
 
     @Override

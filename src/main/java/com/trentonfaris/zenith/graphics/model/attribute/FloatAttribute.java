@@ -3,7 +3,7 @@ package com.trentonfaris.zenith.graphics.model.attribute;
 import java.util.Objects;
 
 public final class FloatAttribute extends Attribute {
-    public float value;
+    private final float value;
 
     public FloatAttribute(float value) {
         this.value = value;
@@ -17,6 +17,10 @@ public final class FloatAttribute extends Attribute {
     @Override
     public int getSize() {
         return 1;
+    }
+
+    public float getValue() {
+        return value;
     }
 
     @Override

@@ -16,32 +16,12 @@ import java.nio.ShortBuffer;
  *
  * @author Trenton Faris
  */
-public final class Image implements Copyable, Disposable {
-    /**
-     * The pixel data of this {@link Image}.
-     */
-    private final Buffer data;
-
-    /**
-     * The width of this {@link Image}.
-     */
-    private final int width;
-
-    /**
-     * The height of this {@link Image}.
-     */
-    private final int height;
-
-    /**
-     * The number of channels of this {@link Image}.
-     */
-    private final int channels;
-
+public record Image(Buffer data, int width, int height, int channels) implements Copyable, Disposable {
     /**
      * Creates a new {@link Image} from the specified pixel data, width, height, and
      * number of channels.
      */
-    public Image(Buffer data, int width, int height, int channels) {
+    public Image {
         if (data == null) {
             String errorMsg = "Data buffer cannot be null.";
             Zenith.getLogger().error(errorMsg);
@@ -65,11 +45,6 @@ public final class Image implements Copyable, Disposable {
             Zenith.getLogger().error(errorMsg);
             throw new IllegalArgumentException(errorMsg);
         }
-
-        this.data = data;
-        this.width = width;
-        this.height = height;
-        this.channels = channels;
     }
 
     /**
@@ -90,6 +65,7 @@ public final class Image implements Copyable, Disposable {
         return resource;
     }
 
+    @Override
     public Image copy() {
         Buffer dataCopy = null;
         if (data instanceof ByteBuffer) {
@@ -103,44 +79,9 @@ public final class Image implements Copyable, Disposable {
         return new Image(dataCopy, width, height, channels);
     }
 
+    @Override
     public void dispose() {
         MemoryUtil.memFree(data);
-    }
-
-    /**
-     * Gets the pixel {@link #data}.
-     *
-     * @return The {@link #data} value.
-     */
-    public Buffer getData() {
-        return data;
-    }
-
-    /**
-     * Gets the {@link #width}.
-     *
-     * @return The {@link #width} value.
-     */
-    public int getWidth() {
-        return width;
-    }
-
-    /**
-     * Gets the {@link #height}.
-     *
-     * @return The {@link #height} value.
-     */
-    public int getHeight() {
-        return height;
-    }
-
-    /**
-     * Gets the number of {@link #channels}.
-     *
-     * @return The {@link #channels} value.
-     */
-    public int getChannels() {
-        return channels;
     }
 
     @Override

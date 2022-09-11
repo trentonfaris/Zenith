@@ -1,10 +1,11 @@
 package com.trentonfaris.zenith.graphics.material.property;
 
 import com.trentonfaris.zenith.graphics.texture.Texture2D;
+import com.trentonfaris.zenith.utility.Disposable;
 
 import java.util.Objects;
 
-public final class Texture2DProperty extends Property {
+public final class Texture2DProperty extends Property implements Disposable {
     public Texture2D value;
 
     @Override

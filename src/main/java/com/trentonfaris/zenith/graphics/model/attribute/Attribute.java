@@ -6,7 +6,6 @@ import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 
-// TODO : Currently only supports floats or vectors of floats (for simplicity when creating the mesh)
 public abstract class Attribute implements Copyable {
 
     @Override

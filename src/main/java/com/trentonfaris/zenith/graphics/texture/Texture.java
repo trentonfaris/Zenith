@@ -41,8 +41,10 @@ public abstract class Texture implements Copyable, Disposable {
         this.target = target;
     }
 
+    @Override
     public abstract Texture copy();
 
+    @Override
     public void dispose() {
         GL11.glDeleteTextures(tbo);
     }

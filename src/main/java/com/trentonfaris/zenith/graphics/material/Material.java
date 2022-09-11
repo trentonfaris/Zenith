@@ -83,6 +83,7 @@ public final class Material implements Copyable, Disposable {
         }
     }
 
+    @Override
     public Material copy() {
         Material material = new Material(shaderType);
 
@@ -96,10 +97,13 @@ public final class Material implements Copyable, Disposable {
         return material;
     }
 
+    @Override
     public void dispose() {
         for (Entry<String, Property> entry : properties.entrySet()) {
             Property property = entry.getValue();
-            property.dispose();
+            if (property instanceof Disposable disposable) {
+                disposable.dispose();
+            }
         }
     }
 

@@ -7,6 +7,7 @@ import com.trentonfaris.zenith.utility.Copyable;
 import com.trentonfaris.zenith.utility.Disposable;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -30,6 +31,12 @@ public final class Model implements Copyable, Disposable {
      * Creates a new {@link Model} with the specified meshes.
      */
     public Model(List<Mesh> meshes) {
+        if (meshes == null) {
+            String errorMsg = "Cannot create a Model from a null list of meshes.";
+            Zenith.getLogger().error(errorMsg);
+            throw new IllegalArgumentException(errorMsg);
+        }
+
         this.meshes.addAll(meshes);
     }
 
@@ -52,6 +59,7 @@ public final class Model implements Copyable, Disposable {
         return resource;
     }
 
+    @Override
     public Model copy() {
         List<Mesh> meshes = new ArrayList<>();
         for (Mesh mesh : this.meshes) {
@@ -61,6 +69,7 @@ public final class Model implements Copyable, Disposable {
         return new Model(meshes);
     }
 
+    @Override
     public void dispose() {
         for (Mesh mesh : meshes) {
             mesh.dispose();
@@ -76,12 +85,12 @@ public final class Model implements Copyable, Disposable {
     }
 
     /**
-     * Gets the list of {@link #meshes}.
+     * Gets an unmodifiable list of the {@link #meshes}.
      *
-     * @return The list of {@link #meshes}.
+     * @return An unmodifiable list of the {@link #meshes}.
      */
     public List<Mesh> getMeshes() {
-        return meshes;
+        return Collections.unmodifiableList(meshes);
     }
 
     @Override

@@ -1,8 +1,11 @@
 package com.trentonfaris.zenith.ecs.system.render;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.trentonfaris.zenith.graphics.model.attribute.Attribute;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 import org.joml.Vector2i;
@@ -70,11 +73,13 @@ public final class RenderSystem extends BaseSystem {
 		this.skybox = Model.loadModel(Models.CUBE.getURI()).getMeshes().get(0);
 
 		// We only use the position attribute of each vertex.
+		List<Vertex> trimmedVertices = new ArrayList<>();
 		for (Vertex vertex : skybox.getVertices()) {
-			vertex.getAttributes().retainAll(vertex.getAttributes().subList(0, 1));
+			List<Attribute> trimmedAttributes = vertex.getAttributes().subList(0, 1);
+			trimmedVertices.add(new Vertex(trimmedAttributes));
 		}
 
-		skybox.update();
+		skybox.setVertices(trimmedVertices);
 		skybox.setMaterial(lightSystem.getSkyboxMaterial());
 	}
 
@@ -170,11 +175,9 @@ public final class RenderSystem extends BaseSystem {
 		for (Entry<String, Uniform> entry : uniforms.entrySet()) {
 			Uniform uniform = entry.getValue();
 
-			if (!(uniform instanceof Mat4Uniform)) {
+			if (!(uniform instanceof Mat4Uniform mat4Uniform)) {
 				continue;
 			}
-
-			Mat4Uniform mat4Uniform = (Mat4Uniform) uniform;
 
 			if (uniform.getUniformType() == UniformType.VIEW_PROJECTION_MATRIX) {
 				mat4Uniform.set(viewProjectionMatrix);

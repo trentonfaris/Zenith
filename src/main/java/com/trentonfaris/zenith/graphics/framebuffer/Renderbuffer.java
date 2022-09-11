@@ -2,12 +2,13 @@ package com.trentonfaris.zenith.graphics.framebuffer;
 
 import com.trentonfaris.zenith.Zenith;
 import com.trentonfaris.zenith.graphics.texture.InternalFormat;
+import com.trentonfaris.zenith.utility.Disposable;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.system.MemoryStack;
 
 import java.nio.IntBuffer;
 
-public final class Renderbuffer implements RenderTarget {
+public final class Renderbuffer implements Disposable, RenderTarget {
     /**
      * The {@link InternalFormat} of this {@link Renderbuffer}.
      */
@@ -32,8 +33,8 @@ public final class Renderbuffer implements RenderTarget {
      * Creates a new {@link Renderbuffer} from the specified {@link InternalFormat}, width, and height.
      *
      * @param internalFormat The {@link InternalFormat} of this {@link Renderbuffer}
-     * @param width The width of this {@link Renderbuffer}
-     * @param height The height of this {@link Renderbuffer}
+     * @param width          The width of this {@link Renderbuffer}
+     * @param height         The height of this {@link Renderbuffer}
      */
     public Renderbuffer(InternalFormat internalFormat, int width, int height) {
         if (internalFormat == null) {
@@ -56,6 +57,7 @@ public final class Renderbuffer implements RenderTarget {
         update();
     }
 
+    @Override
     public void dispose() {
         GL30.glDeleteRenderbuffers(rbo);
     }

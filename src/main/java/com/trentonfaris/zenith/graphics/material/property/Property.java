@@ -10,7 +10,7 @@ import com.trentonfaris.zenith.utility.Disposable;
  *
  * @author Trenton Faris
  */
-public abstract class Property implements Copyable, Disposable {
+public abstract class Property implements Copyable {
 
     @Override
     public abstract Property copy();

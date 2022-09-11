@@ -1,10 +1,11 @@
 package com.trentonfaris.zenith.graphics.material.property;
 
 import com.trentonfaris.zenith.graphics.texture.Cubemap;
+import com.trentonfaris.zenith.utility.Disposable;
 
 import java.util.Objects;
 
-public final class CubemapProperty extends Property {
+public final class CubemapProperty extends Property implements Disposable {
     public Cubemap value;
 
     @Override

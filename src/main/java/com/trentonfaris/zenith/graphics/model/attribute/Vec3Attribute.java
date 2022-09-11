@@ -1,13 +1,20 @@
 package com.trentonfaris.zenith.graphics.model.attribute;
 
+import com.trentonfaris.zenith.Zenith;
 import org.joml.Vector3f;
 
 import java.util.Objects;
 
 public final class Vec3Attribute extends Attribute {
-    public Vector3f value;
+    private final Vector3f value;
 
     public Vec3Attribute(Vector3f value) {
+        if (value == null) {
+            String errorMsg = "Cannot create a Vec3Attribute from a null value.";
+            Zenith.getLogger().error(errorMsg);
+            throw new IllegalArgumentException(errorMsg);
+        }
+
         this.value = value;
     }
 
@@ -19,6 +26,10 @@ public final class Vec3Attribute extends Attribute {
     @Override
     public int getSize() {
         return 3;
+    }
+
+    public Vector3f getValue() {
+        return value;
     }
 
     @Override

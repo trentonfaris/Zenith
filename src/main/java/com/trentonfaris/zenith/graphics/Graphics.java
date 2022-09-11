@@ -146,6 +146,7 @@ public final class Graphics implements Disposable {
         }
     }
 
+    @Override
     public void dispose() {
         shaderManager.dispose();
     }

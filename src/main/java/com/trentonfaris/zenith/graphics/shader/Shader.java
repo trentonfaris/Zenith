@@ -49,6 +49,7 @@ public abstract class Shader implements Disposable {
         this.program = resource;
     }
 
+    @Override
     public final void dispose() {
         GL20.glUseProgram(0);
         GL20.glDeleteProgram(program);

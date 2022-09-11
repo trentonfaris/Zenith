@@ -2,6 +2,7 @@ package com.trentonfaris.zenith.graphics.framebuffer;
 
 import com.trentonfaris.zenith.Zenith;
 import com.trentonfaris.zenith.graphics.texture.Texture2D;
+import com.trentonfaris.zenith.utility.Disposable;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.system.MemoryStack;
@@ -18,7 +19,7 @@ import java.util.Map.Entry;
  *
  * @author Trenton Faris
  */
-public final class Framebuffer {
+public final class Framebuffer implements Disposable {
     /**
      * The render targets attached to this {@link Framebuffer}.
      */
@@ -41,6 +42,7 @@ public final class Framebuffer {
         }
     }
 
+    @Override
     public void dispose() {
         GL30.glDeleteFramebuffers(fbo);
 
@@ -59,7 +61,7 @@ public final class Framebuffer {
      * Adds an {@link Attachment} to this {@link Framebuffer}. Removes and disposes
      * of the previous {@link Attachment}, if one exists.
      *
-     * @param attachment The {@link Attachment} where the {@link RenderTarget} will be added
+     * @param attachment   The {@link Attachment} where the {@link RenderTarget} will be added
      * @param renderTarget The target {@link RenderTarget} to add
      */
     public void addAttachment(Attachment attachment, RenderTarget renderTarget) {

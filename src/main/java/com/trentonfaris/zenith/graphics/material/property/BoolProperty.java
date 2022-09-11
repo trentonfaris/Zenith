@@ -14,11 +14,6 @@ public final class BoolProperty extends Property {
     }
 
     @Override
-    public void dispose() {
-
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

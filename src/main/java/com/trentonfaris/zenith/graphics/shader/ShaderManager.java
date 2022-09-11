@@ -1,6 +1,7 @@
 package com.trentonfaris.zenith.graphics.shader;
 
 import com.trentonfaris.zenith.Zenith;
+import com.trentonfaris.zenith.utility.Disposable;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -14,7 +15,7 @@ import java.util.Map.Entry;
  *
  * @author Trenton Faris
  */
-public final class ShaderManager {
+public final class ShaderManager implements Disposable {
     /**
      * The list of shaders.
      */
@@ -25,6 +26,7 @@ public final class ShaderManager {
      */
     private Shader activeShader = null;
 
+    @Override
     public void dispose() {
         // TODO :  Properly dispose of everything and reset for reuse?
         for (Entry<Class<? extends Shader>, Shader> entry : shaders.entrySet()) {

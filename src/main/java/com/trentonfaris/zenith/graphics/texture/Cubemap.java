@@ -76,10 +76,10 @@ public final class Cubemap extends Texture {
 		for (int i = 0; i < images.length; i++) {
 			Image image = images[i];
 
-			Buffer data = image.getData();
-			int width = image.getWidth();
-			int height = image.getHeight();
-			int channels = image.getChannels();
+			Buffer data = image.data();
+			int width = image.width();
+			int height = image.height();
+			int channels = image.channels();
 
 			// TODO : Add support for other numbers of channels?
 			if (channels != 3) {

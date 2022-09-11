@@ -14,6 +14,7 @@ import org.lwjgl.system.MemoryStack;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,12 +29,12 @@ public final class Mesh implements Copyable, Disposable {
     /**
      * The list of vertices in this {@link Mesh}.
      */
-    private final List<Vertex> vertices;
+    private List<Vertex> vertices;
 
     /**
      * The list of indices in this {@link Mesh}.
      */
-    private final List<Integer> indices;
+    private List<Integer> indices;
 
     /**
      * The {@link PrimitiveType} of this {@link Mesh}.
@@ -103,7 +104,7 @@ public final class Mesh implements Copyable, Disposable {
         }
 
         if (indices == null || indices.isEmpty()) {
-            String errorMsg = "Cannot create a Mesh from a null list of indices.";
+            String errorMsg = "Cannot create a Mesh from a null or empty list of indices.";
             Zenith.getLogger().error(errorMsg);
             throw new IllegalArgumentException(errorMsg);
         }
@@ -137,7 +138,7 @@ public final class Mesh implements Copyable, Disposable {
         update();
     }
 
-    public void update() {
+    private void update() {
         GL30.glBindVertexArray(vao);
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vbo);
 
@@ -157,15 +158,15 @@ public final class Mesh implements Copyable, Disposable {
             for (Vertex vertex : vertices) {
                 for (Attribute attribute : vertex.getAttributes()) {
                     if (attribute instanceof FloatAttribute floatAttribute) {
-                        pVertices.put(floatAttribute.value);
+                        pVertices.put(floatAttribute.getValue());
                     } else if (attribute instanceof Vec2Attribute vec2Attribute) {
-                        pVertices.put((vec2Attribute.value).get(pVector2f));
+                        pVertices.put((vec2Attribute.getValue()).get(pVector2f));
                         pVector2f.clear();
                     } else if (attribute instanceof Vec3Attribute vec3Attribute) {
-                        pVertices.put((vec3Attribute.value).get(pVector3f));
+                        pVertices.put((vec3Attribute.getValue()).get(pVector3f));
                         pVector3f.clear();
                     } else if (attribute instanceof Vec4Attribute vec4Attribute) {
-                        pVertices.put((vec4Attribute.value).get(pVector4f));
+                        pVertices.put((vec4Attribute.getValue()).get(pVector4f));
                         pVector4f.clear();
                     }
                 }
@@ -201,6 +202,7 @@ public final class Mesh implements Copyable, Disposable {
         GL30.glBindVertexArray(0);
     }
 
+    @Override
     public Mesh copy() {
         List<Vertex> verticesCopy = new ArrayList<>();
         for (Vertex vertex : this.vertices) {
@@ -211,6 +213,7 @@ public final class Mesh implements Copyable, Disposable {
                 material.copy());
     }
 
+    @Override
     public void dispose() {
         GL15.glDeleteBuffers(vbo);
         GL15.glDeleteBuffers(vbo);
@@ -231,23 +234,53 @@ public final class Mesh implements Copyable, Disposable {
     }
 
     /**
-     * Gets the list of the {@link #vertices}. If the list of vertices is modified,
-     * it is recommended to {@link #update()} the {@link Mesh}.
+     * Gets an unmodifiable list of the {@link #vertices}.
      *
-     * @return The list of {@link #vertices}.
+     * @return An unmodifiable list of the {@link #vertices}.
      */
     public List<Vertex> getVertices() {
-        return vertices;
+        return Collections.unmodifiableList(vertices);
     }
 
     /**
-     * Gets the {@link #indices}. If the list of indices is modified, it is
-     * recommended to {@link #update()} the {@link Mesh}.
+     * Sets the {@link #vertices}. The {@link Mesh} will update its VAO.
      *
-     * @return The list {@link #indices}.
+     * @param vertices The target list of vertices.
+     */
+    public void setVertices(List<Vertex> vertices) {
+        if (vertices == null || vertices.isEmpty()) {
+            String errorMsg = "Cannot set vertices to a null or empty list.";
+            Zenith.getLogger().error(errorMsg);
+            throw new IllegalArgumentException(errorMsg);
+        }
+
+        this.vertices = vertices;
+        update();
+    }
+
+    /**
+     * Gets an unmodifiable list of the {@link #indices}.
+     *
+     * @return An unmodifiable list of the {@link #indices}.
      */
     public List<Integer> getIndices() {
-        return indices;
+        return Collections.unmodifiableList(indices);
+    }
+
+    /**
+     * Sets the {@link #indices}. The {@link Mesh} will update its VAO.
+     *
+     * @param indices The target list of indices.
+     */
+    public void setIndices(List<Integer> indices) {
+        if (indices == null || indices.isEmpty()) {
+            String errorMsg = "Cannot set indices to a null or empty list.";
+            Zenith.getLogger().error(errorMsg);
+            throw new IllegalArgumentException(errorMsg);
+        }
+
+        this.indices = indices;
+        update();
     }
 
     /**

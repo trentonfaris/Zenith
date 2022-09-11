@@ -85,8 +85,8 @@ public class DemoAssetSystem extends BaseSystem {
 
         Property albedoMap = material.getProperties().get(StandardShader.ALBEDO_MAP);
         if (albedoMap instanceof Texture2DProperty) {
-            ((Texture2DProperty) albedoMap).value = new Texture2D(InternalFormat.SRGB, albedo.getWidth(),
-                    albedo.getHeight(), PixelFormat.RGB, PixelType.UNSIGNED_SHORT, albedo.getData(),
+            ((Texture2DProperty) albedoMap).value = new Texture2D(InternalFormat.SRGB, albedo.width(),
+                    albedo.height(), PixelFormat.RGB, PixelType.UNSIGNED_SHORT, albedo.data(),
                     WrappingMode.REPEAT, FilteringMode.LINEAR);
         }
 
@@ -100,8 +100,8 @@ public class DemoAssetSystem extends BaseSystem {
 
         Property roughnessMap = material.getProperties().get(StandardShader.ROUGHNESS_MAP);
         if (roughnessMap instanceof Texture2DProperty) {
-            ((Texture2DProperty) roughnessMap).value = new Texture2D(InternalFormat.RED, roughness.getWidth(),
-                    roughness.getHeight(), PixelFormat.RED, PixelType.UNSIGNED_BYTE, roughness.getData(),
+            ((Texture2DProperty) roughnessMap).value = new Texture2D(InternalFormat.RED, roughness.width(),
+                    roughness.height(), PixelFormat.RED, PixelType.UNSIGNED_BYTE, roughness.data(),
                     WrappingMode.REPEAT, FilteringMode.LINEAR);
         }
 
@@ -115,8 +115,8 @@ public class DemoAssetSystem extends BaseSystem {
 
         Property aoMap = material.getProperties().get(StandardShader.AO_MAP);
         if (aoMap instanceof Texture2DProperty) {
-            ((Texture2DProperty) aoMap).value = new Texture2D(InternalFormat.RED, ao.getWidth(),
-                    ao.getHeight(), PixelFormat.RED, PixelType.UNSIGNED_BYTE, ao.getData(), WrappingMode.REPEAT,
+            ((Texture2DProperty) aoMap).value = new Texture2D(InternalFormat.RED, ao.width(),
+                    ao.height(), PixelFormat.RED, PixelType.UNSIGNED_BYTE, ao.data(), WrappingMode.REPEAT,
                     FilteringMode.LINEAR);
         }
 
@@ -130,8 +130,8 @@ public class DemoAssetSystem extends BaseSystem {
 
         Property normalMap = material.getProperties().get(StandardShader.NORMAL_MAP);
         if (normalMap instanceof Texture2DProperty) {
-            ((Texture2DProperty) normalMap).value = new Texture2D(InternalFormat.RGB, normal.getWidth(),
-                    normal.getHeight(), PixelFormat.RGB, PixelType.UNSIGNED_SHORT, normal.getData(),
+            ((Texture2DProperty) normalMap).value = new Texture2D(InternalFormat.RGB, normal.width(),
+                    normal.height(), PixelFormat.RGB, PixelType.UNSIGNED_SHORT, normal.data(),
                     WrappingMode.REPEAT, FilteringMode.LINEAR);
         }
 
@@ -145,8 +145,8 @@ public class DemoAssetSystem extends BaseSystem {
 
         Property heightMap = material.getProperties().get(StandardShader.HEIGHT_MAP);
         if (heightMap instanceof Texture2DProperty) {
-            ((Texture2DProperty) heightMap).value = new Texture2D(InternalFormat.RED, height.getWidth(),
-                    height.getHeight(), PixelFormat.RED, PixelType.UNSIGNED_SHORT, height.getData(),
+            ((Texture2DProperty) heightMap).value = new Texture2D(InternalFormat.RED, height.width(),
+                    height.height(), PixelFormat.RED, PixelType.UNSIGNED_SHORT, height.data(),
                     WrappingMode.REPEAT, FilteringMode.LINEAR);
         }
 

@@ -116,6 +116,7 @@ public final class Texture2D extends Texture implements RenderTarget {
         update();
     }
 
+    @Override
     public Texture2D copy() {
         Buffer pixelDataCopy = null;
         if (pixelData instanceof ByteBuffer) {
@@ -134,6 +135,7 @@ public final class Texture2D extends Texture implements RenderTarget {
                 WrappingMode.valueOf(wrappingMode.name()), FilteringMode.valueOf(filteringMode.name()));
     }
 
+    @Override
     public void dispose() {
         super.dispose();
 
